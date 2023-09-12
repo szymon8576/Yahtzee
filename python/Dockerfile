@@ -11,8 +11,5 @@ COPY . /app
 RUN pip install pip==23.1.2
 RUN pip install -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
 # Run app.py when the container launches
 CMD ["python", "yahtzee.py"]
