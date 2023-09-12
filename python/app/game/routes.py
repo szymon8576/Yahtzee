@@ -12,7 +12,7 @@ gameRooms = GameRoomAccumulator()
 
 @game_bp.route('/get-rooms-data/<int:room_id>', methods=["GET"])
 @game_bp.route('/get-rooms-data', methods=["GET"])
-def get_rooms_ids(room_id=None):
+def get_rooms_data(room_id=None):
     if room_id is None:
         data = {room.id: room.get_state() for room in gameRooms.rooms}
         return jsonify(data)
@@ -36,16 +36,15 @@ def handle_connect():
 
 
 @socketio.on('disconnect')
-def on_leave():
+def handle_disconnect():
     room_id, user_uuid = int(request.args.get('room_id')), request.args.get('user_uuid')
     leave_room(room_id)
     gameRooms.remove_player_from_room(room_id, user_uuid)
 
 
 @socketio.on('update_game_state')
-def handle_message(data):
-    room_id = data["room_id"]
-    user_uuid = data["user_uuid"]
-    new_state = data["new_state"]
+def handle_update_game_state(data):
+    room_id, user_uuid, new_state = data["room_id"], data["user_uuid"], data["new_state"]
+
     updated_state = gameRooms.update_room_state(room_id, user_uuid, new_state)
     emit('game_state_update', updated_state, room=room_id)
