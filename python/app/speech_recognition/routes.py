@@ -7,7 +7,7 @@ import io
 import soundfile as sf
 
 speech_recognition_bp = Blueprint('speech-recognition', __name__)
-loaded_model = tf.keras.models.load_model("speech_recognition/VoiceRecognitionModel.h5")
+loaded_model = tf.keras.models.load_model("app/speech_recognition/VoiceRecognitionModel.h5")
 
 @speech_recognition_bp.route('/recognize', methods=["POST"])
 def recognize():
@@ -17,3 +17,5 @@ def recognize():
     recognized_digits = predict_wav(audio, used_model=loaded_model)
 
     return jsonify(recognized_digits)
+
+

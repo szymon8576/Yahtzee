@@ -2,10 +2,6 @@ from random import choice
 from .player import *
 
 
-animals = ["panda", "koala", "bunny", "puppy", "kitten", "penguin", "otter", "hedgehog", "squirrel", "dolphin"]
-adjectives = ["fluffy", "playful", "adorable", "cuddly", "charming", "lovable", "curious", "delightful", "tiny", "sweet"]
-
-
 class PlayersAccumulator:
     def __init__(self):
         self.players = []
