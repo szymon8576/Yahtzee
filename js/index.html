@@ -3,9 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Yathzee</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="../images/dice-icon.svg">
 </head>
 <body>
-    <h1> Game by Natalia&Szymi </h1>
+
+<div id="info-icon"> <img src="../images/info.svg" alt="" id="icon"> </div>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Games rules: <a href="https://www.officialgamerules.org/yahtzee" target="_blank"> https://www.officialgamerules.org/yahtzee</a> </p>
+    </div>
+
+  </div>
+<div class="game-name">
+    <div class="stack" style="--stacks: 3;">
+        <span style="--index: 0;">YAHTZEE</span>
+        <span style="--index: 1;">YAHTZEE</span>
+        <span style="--index: 2;">YAHTZEE</span>
+      </div>
+    <h2 class="subtitle"> The Best Dice Game for You and Your Friends</h2>
+</div>
+
+<div class="game-tables-btn">
+    <h2>Choose table:</h2>
+    <div class="btns">
+        <button class="table-btn"> 1 </button>
+        <button class="table-btn"> 2 </button>
+        <button class="table-btn"> 3 </button>
+        <button class="table-btn"> 4 </button>
+        <button class="table-btn"> 5 </button>
+        <button class="table-btn"> 6 </button>
+        <button class="table-btn"> 7 </button>
+        <button class="table-btn"> 8 </button>
+        <button class="table-btn"> 9 </button>
+        <button class="table-btn"> 10 </button>
+    </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
