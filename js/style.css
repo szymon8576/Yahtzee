@@ -12,6 +12,7 @@ body{
     padding: 0;
     background-color: var(--blue-color);
     font-family: var(--body-font);
+    border-radius: 10%;
 }
 #info-icon{
     display: flex;
