@@ -1,0 +1,64 @@
+
+$table-bg-color: #9ec0c4 ; // Background color for table header
+$table-bg-score: #f2f2f2;
+$font-family: "Roboto", sans-serif;
+
+table {
+    border-collapse: collapse;
+    margin: 40px 0px;
+    width: 100%;
+    font-size:14px;
+    font-family: $font-family;
+
+    th, td {
+        border: 1px solid black;
+        padding: 6px;
+        text-align: left;
+    }
+    td{
+        background-color: $table-bg-score;
+    }
+    th {
+        background-color: $table-bg-color;
+    }
+}
+
+.first-column{
+    background-color: $table-bg-color;
+}
+
+.table-bold{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.game-body{
+    display: flex;
+    flex-direction: row;
+    width:100%;
+}
+.scoresheet{
+    width:30%;
+}
+.dice-section{
+    width:40%;
+}
+#mic-option{
+    display: flex;
+    flex-direction: column;
+}
+#mic-toggle{
+background-color: $table-bg-score;
+border-color: $table-bg-score;
+font-weight: 700;
+padding: 10px;
+}
+
+.mic-off .fas .fa-microphone {
+    display: none;
+    
+}
+
+.mic-on .fas .fa-microphone-slash {
+    display: none;
+}

@@ -4,10 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yathzee</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <link rel="icon" type="image/x-icon" href="../images/dice-icon.svg">
+    <script src="https://kit.fontawesome.com/14b4aab01c.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
+<h2 class="game-name">
+    Table 1
+</h2>
+<div class="game-body">
+<div class="scoresheet">
+<table>
+    <tr>
+        <th></th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+    </tr>
+    <tr>
+        <td class="first-column">Ones</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Twos</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Threes</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Fours</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Fives</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Sixes</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column table-bold">Upper Table Total</td>
+        <td class="first-column"></td>
+        <td class="first-column"></td>
+    </tr>
+    <tr>
+        <td class="first-column table-bold">Bonus</td>
+        <td class="first-column"></td>
+        <td class="first-column"></td>
+    </tr>
+    <tr>
+        <td class="first-column">3x</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">4x</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">3x+2x</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Small Straight</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Large Straight</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Yathzee</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column">Chance</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="first-column table-bold">Total</td>
+        <td class="first-column"></td>
+        <td class="first-column"></td>
+    </tr>
+   
+</table>
+</div>
+<div class="dice-section">
+    <div class="dice-display"> </div>
+
+    <button id="rollDice" class="btn"> Roll Dices</button>
+</div>
+<div id="mic-option" class="mic-off">
+    <button id='mic-toggle' class="mic-off"> Start Voice Recognition
+    <i class="fas fa-microphone" class="mic-on" style='font-size:30px'></i>
+    <button id='mic-toggle' class="mic-off"> Stop Voice Recognition
+    <i class="fas fa-microphone-slash" class="mic-on" style='font-size:30px'></i>
     
+</button>
+ </div>
+</div>
+</div>
 </body>
+<script src="table.js"></script>
+<script src="yathzee.js"></script>
+<script src="scoring.js"></script>
 </html>
