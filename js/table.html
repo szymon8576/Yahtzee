@@ -105,12 +105,18 @@
 </table>
 </div>
 <div class="dice-section">
-    <div class="dice-display"> </div>
+    <div class="dice-display"> 
+       <img src="/images/dice-1.png" alt="" class="dice" id='dice-1' onclick="toggleLock(0)">
+        <img src="/images/dice-2.png" alt="" class="dice" id='dice-2' onclick="toggleLock(1)">
+        <img src="/images/dice-1.png" alt="" class="dice" id='dice-3' onclick="toggleLock(2)">
+          <img src="/images/dice-4.png" alt="" class="dice" id='dice-4' onclick="toggleLock(3)">
+       <img src="/images/dice-5.png" alt="" class="dice" id='dice-5' onclick="toggleLock(4)">
+    </div>
 
-    <button id="rollDice" class="btn"> Roll Dices</button>
+    <button id="rollDice" class="btn"> <i class="fa-solid fa-rotate-left"></i></button>
 </div>
 <div id="mic-option" class="mic-off">
-    <button id="recordingButton"> <p id="micButtonText">Start Voice Recognition</p>
+    <button id="recordingButton"> <p id="micButtonText"></p>
     <i id="mic-on" class="fas fa-microphone" class="mic-on" style='font-size:30px'></i>
     <i id="mic-off" class="fas fa-microphone-slash" class="mic-on" style='font-size:30px'></i>
     
