@@ -54,7 +54,7 @@ function updateDiceImages(){
 
 function toggleLock(index) {
 	lockedDice[index] = !lockedDice[index];
-	const diceElement = document.getElementById(dice-`${index+1}`);
+	const diceElement = document.getElementById(`dice-${index+1}`);
 	if (lockedDice[index]) {
 		diceElement.classList.add("selected");
 		diceSelected.push()
