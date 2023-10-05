@@ -18,27 +18,35 @@ recordingButton.addEventListener('click', () => {
 
 
 
-const categories = [
+const categories_names = [
     'Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'Upper Table Total',
     'Bonus', '3x', '4x', '3x+2x', 'Small Straight', 'Large Straight',
-    'Yathzee', 'Chance', 'Total'
+    'Yahtzee', 'Chance', 'Total'
+];
+
+
+const categories_ids = [
+    'Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'Upper Table Total',
+    'Bonus', 'Three of a kind', 'Four of a kind', 'Full house', 'Small Straight', 'Large Straight',
+    'Yahtzee', 'Chance', 'Total'
 ];
 
 // Initialize the table and add onclick methods
 const table = document.getElementById('score-table');
 
-for (let i = 0; i < categories.length; i++) {
+for (let i = 0; i < categories_names.length; i++) {
     const row = table.insertRow();
     
     // Add the category name to the first column
     const categoryCell = row.insertCell(0);
-    categoryCell.textContent = categories[i];
+    categoryCell.textContent = categories_names[i];
     categoryCell.className = 'first-column';
     
     for (let j = 1; j <= 2; j++) {
         const cell = row.insertCell(j);
-        cell.textContent = '';
-        cell.id = `${categories[i]}-${j}`;
+        cell.classList.add("scoringCell")
+        cell.textContent = ''; 
+        cell.id = `${categories_ids[i].replaceAll(" ","").toLowerCase()}-${j}`;
         cell.onclick = function() {
             // This function will be called when the cell is clicked
             const cellId = this.id;
