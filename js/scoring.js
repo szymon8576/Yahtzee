@@ -17,7 +17,11 @@ const diceArea=document.getElementsByClassName("dice-display");
 const rollButton = document.getElementById("rollDice");
 
 //events
-rollButton.addEventListener('click', randomDice);
+rollButton.addEventListener('click', function (){  
+	if(rollNumber<2) 
+	{randomDice(),
+	rollNumber++}
+});
 
 randomDice();
 //Random number between 1-6
@@ -28,7 +32,7 @@ function randomDice() {
 		diceRolled.push(randomNumber);
 }
 console.log(diceRolled);
-updateDiceImages()
+updateDiceImages();
 }
 
 
@@ -37,20 +41,28 @@ function updateDiceImages(){
 	const diceElements = diceContainer.querySelectorAll('.dice');
 
 	for (let i = 0; i < diceRolled.length; i++) {
-		const diceImg = diceElements[i];
-		const diceNumber = diceRolled[i];
-		diceImg.src = `/images/dice-${diceNumber}.png`;
-		diceImg.alt = `Dice ${diceNumber}`;
+		if (!lockedDice[i])
+		{
+			const diceImg = diceElements[i];
+			const diceNumber = diceRolled[i];
+			diceImg.src = `/images/dice-${diceNumber}.png`;
+			diceImg.alt = `Dice ${diceNumber}`;
+		}
+		
 	  }
 }
 
 function toggleLock(index) {
 	lockedDice[index] = !lockedDice[index];
-	const diceElement = document.getElementById(`dice-${index+1}`);
+	const diceElement = document.getElementById(dice-`${index+1}`);
 	if (lockedDice[index]) {
 		diceElement.classList.add("selected");
 		diceSelected.push()
 	} else {
 		diceElement.classList.remove("selected");
 	}
+}
+
+function chooseScore(){
+	rollNumber = 0;
 }
