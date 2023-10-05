@@ -11,6 +11,7 @@ let diceIndexHolder = [0,1,2,3,4];
 let selectedDiceElements; //HTML Collection
 let selectedCategory = null;
 let lockedDice = [false, false, false, false, false];
+let currentPlayer=1;
 
 //DOM Elements
 const diceArea=document.getElementsByClassName("dice-display");
@@ -18,7 +19,7 @@ const rollButton = document.getElementById("rollDice");
 
 //events
 rollButton.addEventListener('click', function (){  
-	if(rollNumber<2) 
+	if(rollNumber<20) 
 	{randomDice(),
 	rollNumber++}
 });
@@ -26,15 +27,31 @@ rollButton.addEventListener('click', function (){
 randomDice();
 //Random number between 1-6
 function randomDice() {
+	oldDices = diceRolled;
 	diceRolled=[];
 	for (let i = 0; i < 5; i++) {
-		const randomNumber = Math.floor(Math.random() * 6) + 1;
-		diceRolled.push(randomNumber);
+		if (lockedDice[i]){
+			diceRolled.push(oldDices[i]);
+		}
+		else{
+			const randomNumber = Math.floor(Math.random() * 6) + 1;
+			diceRolled.push(randomNumber);
+		}
+		
 }
-console.log(diceRolled);
-updateDiceImages();
+	console.log(diceRolled);
+	updateDiceImages();
+	displaySpeculativeScore();
 }
 
+
+function displaySpeculativeScore(){
+
+	for (let i=0; i<functionNames.length; i++){
+		document.getElementById(`${functionNames[i].name.toLowerCase()}-${currentPlayer}`).textContent= functionNames[i](diceRolled)
+	}
+	
+}
 
 function updateDiceImages(){
 	const diceContainer = document.querySelector(".dice-display")
@@ -61,6 +78,7 @@ function toggleLock(index) {
 	} else {
 		diceElement.classList.remove("selected");
 	}
+	
 }
 
 function chooseScore(){
