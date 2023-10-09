@@ -5,7 +5,8 @@ table {
   font-size: 14px;
   font-family: "Roboto", sans-serif;
 }
-table th, table td {
+table th,
+table td {
   border: 1px solid black;
   padding: 6px;
   text-align: left;
@@ -15,6 +16,7 @@ table td {
 }
 table th {
   background-color: #9ec0c4;
+  text-align: center;
 }
 
 .first-column {
@@ -59,11 +61,11 @@ table th {
   margin: 20px;
 }
 .dice-display img:hover {
-  border-color: rgb(167, 20, 33);
+  border-color: rgb(3, 18, 160);
   opacity: 95%;
 }
 .dice-display .selected {
-  border: dotted 3px rgb(167, 20, 33);
+  border: dotted 3px rgb(3, 18, 160);
 }
 
 #mic-option {
@@ -87,16 +89,13 @@ table th {
 }
 
 #recordingButton {
-  width: 150px;
+  width: 170px;
   border: 1px solid rgb(94, 94, 97);
   border-radius: 5px;
   background-color: #f2f2f2;
 }
 #recordingButton p {
   margin: 5px;
-}
-#recordingButton i {
-  margin-bottom: 5px;
 }
 
 #rollDice {
@@ -115,6 +114,11 @@ table th {
 }
 #rollDice:active {
   opacity: 0.9;
+}
+
+.scoringCell {
+  color: grey;
+  text-align: center;
 }
 
 @keyframes stack {

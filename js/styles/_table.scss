@@ -1,124 +1,125 @@
-
-$table-bg-color: #9ec0c4 ; // Background color for table header
+$table-bg-color: #9ec0c4; // Background color for table header
 $table-bg-score: #f2f2f2;
 $font-family: "Roboto", sans-serif;
 
 table {
-    border-collapse: collapse;
-    margin: 40px 0px;
-    width: 100%;
-    font-size:14px;
-    font-family: $font-family;
+  border-collapse: collapse;
+  margin: 40px 0px;
+  width: 100%;
+  font-size: 14px;
+  font-family: $font-family;
 
-    th, td {
-        border: 1px solid black;
-        padding: 6px;
-        text-align: left;
-    }
-    td{
-        background-color: $table-bg-score;
-    }
-    th {
-        background-color: $table-bg-color;
-    }
-}
-
-.first-column{
+  th,
+  td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: left;
+  }
+  td {
+    background-color: $table-bg-score;
+  }
+  th {
     background-color: $table-bg-color;
+    text-align: center;
+  }
 }
 
-.table-bold{
-    font-weight: bold;
-    text-transform: uppercase;
+.first-column {
+  background-color: $table-bg-color;
 }
 
-.game-body{
-    display: flex;
-    flex-direction: row;
-    margin-top: 2em;
-    width:100%;
-}
-.scoresheet{
-    width:30%;
-}
-.dice-section{
-   display: flex;
-   flex-direction: column;
-   width:40%;
-   align-items: center;
+.table-bold {
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.dice-display{
-    div{
-        width:100px;
-        height:100px;
+.game-body {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2em;
+  width: 100%;
+}
+.scoresheet {
+  width: 30%;
+}
+.dice-section {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  align-items: center;
+}
+
+.dice-display {
+  div {
+    width: 100px;
+    height: 100px;
+  }
+  img:nth-child(2n) {
+    margin-left: 60px;
+  }
+  img {
+    border: dotted 3px transparent;
+    width: 60px;
+    height: auto;
+    display: block;
+    margin: 20px;
+    &:hover {
+      border-color: rgb(3, 18, 160);
+      opacity: 95%;
     }
-    img:nth-child(2n){
-       margin-left: 60px;
-    }
-    img{
-        border: dotted 3px transparent;
-        width: 60px;
-        height: auto;
-        display: block;
-        margin: 20px;
-      &:hover{
-            border-color: rgb(167, 20, 33);
-            opacity: 95%;
-    }
-
+  }
+  .selected {
+    border: dotted 3px rgb(3, 18, 160);
+  }
 }
-.selected{
-    border: dotted 3px rgb(167, 20, 33);
+#mic-option {
+  display: flex;
+  flex-direction: column;
 }
-}
-#mic-option{
-    display: flex;
-    flex-direction: column;
-}
-#mic-toggle{
-background-color: $table-bg-score;
-border-color: $table-bg-score;
-font-weight: 700;
-padding: 10px;
+#mic-toggle {
+  background-color: $table-bg-score;
+  border-color: $table-bg-score;
+  font-weight: 700;
+  padding: 10px;
 }
 
 .mic-off .fas .fa-microphone {
-    display: none;
-    
+  display: none;
 }
 
 .mic-on .fas .fa-microphone-slash {
-    display: none;
+  display: none;
 }
 
-#recordingButton{
-    width: 150px;
-    border: 1px solid rgb(94, 94, 97);
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    p{
-        margin: 5px;
-    }
-    i{
-        margin-bottom: 5px;
-    }
+#recordingButton {
+  width: 170px;
+  border: 1px solid rgb(94, 94, 97);
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  p {
+    margin: 5px;
+  }
 }
 
-#rollDice{
-    width:50px;
-    height:50px;
-    background-color: rgb(212, 35, 35);
-    border:none;
-    border-radius: 5px;
-    i{
-        font-size: 20px;
-        color: white;
-    }
-    &:hover{
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    }
-    &:active{
-        opacity: 0.9;
-    }
+#rollDice {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(212, 35, 35);
+  border: none;
+  border-radius: 5px;
+  i {
+    font-size: 20px;
+    color: white;
+  }
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.scoringCell {
+  color: grey;
+  text-align: center;
 }

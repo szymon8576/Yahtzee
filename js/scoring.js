@@ -7,9 +7,6 @@ let diceRolled = []; //all dice in play array
 let diceOnTable = []; //on-table dice array
 let diceSelected = []; //selected dices array
 let currentDiceIndex; //dice selection/deselection
-let diceIndexHolder = [0, 1, 2, 3, 4];
-let selectedDiceElements; //HTML Collection
-let selectedCategory = null;
 let lockedDice = [false, false, false, false, false];
 let currentPlayer = 1;
 
@@ -26,6 +23,7 @@ rollButton.addEventListener("click", function () {
 
 randomDice();
 //Random number between 1-6
+//create array with selected values
 function randomDice() {
   oldDices = diceRolled;
   diceRolled = [];
@@ -40,14 +38,6 @@ function randomDice() {
   console.log(diceRolled);
   updateDiceImages();
   displaySpeculativeScore();
-}
-
-function displaySpeculativeScore() {
-  for (let i = 0; i < functionNames.length; i++) {
-    document.getElementById(
-      `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
-    ).textContent = functionNames[i](diceRolled);
-  }
 }
 
 function updateDiceImages() {
@@ -76,6 +66,27 @@ function toggleLock(index) {
   }
 }
 
-function chooseScore() {
-  rollNumber = 0;
+//display score that is possible from currently visible dices
+function displaySpeculativeScore() {
+  for (let i = 0; i < functionNames.length; i++) {
+    document.getElementById(
+      `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
+    ).textContent = functionNames[i](diceRolled);
+  }
+}
+
+// Function to lock the score for a category
+function lockScore(category) {
+  const scoreElement = document.getElementById(`${category}-score`);
+  const lockButton =
+    scoreElement.parentElement.nextElementSibling.firstElementChild;
+
+  // Check if the score is already locked
+  if (!scoreElement.classList.contains("locked")) {
+    scoreElement.classList.add("locked");
+    lockButton.textContent = "Unlock";
+  } else {
+    scoreElement.classList.remove("locked");
+    lockButton.textContent = "Lock";
+  }
 }
