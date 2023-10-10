@@ -14,6 +14,7 @@ table {
     border: 1px solid black;
     padding: 6px;
     text-align: left;
+    cursor: pointer;
   }
   td {
     background-color: $table-bg-score;
@@ -23,7 +24,6 @@ table {
     text-align: center;
   }
 }
-
 .first-column {
   background-color: $table-bg-color;
 }
@@ -33,6 +33,15 @@ table {
   text-transform: uppercase;
 }
 
+#total-1,
+#total-2,
+#uppertabletotal-1,
+#uppertabletotal-2,
+#bonus-1,
+#bonus-2 {
+  background-color: $table-bg-color;
+  pointer-events: none;
+}
 .game-body {
   display: flex;
   flex-direction: row;
@@ -93,9 +102,11 @@ table {
 
 #recordingButton {
   width: 170px;
+  color: rgb(250, 247, 247);
   border: 1px solid rgb(94, 94, 97);
   border-radius: 5px;
-  background-color: #f2f2f2;
+  text-align: center;
+  background-color: #2b1fcc;
   p {
     margin: 5px;
   }
@@ -122,4 +133,13 @@ table {
 .scoringCell {
   color: grey;
   text-align: center;
+  padding: 0;
+}
+
+.locked {
+  color: black;
+  font-weight: bolder;
+}
+.disabled {
+  opacity: 0.5;
 }

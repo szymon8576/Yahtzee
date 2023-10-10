@@ -43,7 +43,6 @@ function fourOfAKind(dice) {
     { length: 6 },
     (_, num) => dice.filter((die) => die === num + 1).length
   );
-  console.log(counts);
   return counts.some((count) => count >= 4)
     ? dice.reduce((sum, num) => sum + num, 0)
     : 0;

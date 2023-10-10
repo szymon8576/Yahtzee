@@ -1,23 +1,117 @@
 //throw and round number
-let rollNumber = 0;
+let rollNumber = 1;
 let roundNumber = 1;
 
 //dice information
 let diceRolled = []; //all dice in play array
-let diceOnTable = []; //on-table dice array
 let diceSelected = []; //selected dices array
 let currentDiceIndex; //dice selection/deselection
 let lockedDice = [false, false, false, false, false];
 let currentPlayer = 1;
+let scoreFields1 = {};
+let scoreFields2 = {};
 
 //DOM Elements
 const diceArea = document.getElementsByClassName("dice-display");
 const rollButton = document.getElementById("rollDice");
 
+// Initialize the table and add onclick methods
+const categories_names = [
+  "Ones",
+  "Twos",
+  "Threes",
+  "Fours",
+  "Fives",
+  "Sixes",
+  "Upper Table Total",
+  "Bonus",
+  "3x",
+  "4x",
+  "3x+2x",
+  "Small Straight",
+  "Large Straight",
+  "Yahtzee",
+  "Chance",
+  "Total",
+];
+
+const categories_ids = [
+  "Ones",
+  "Twos",
+  "Threes",
+  "Fours",
+  "Fives",
+  "Sixes",
+  "Upper Table Total",
+  "Bonus",
+  "Three of a kind",
+  "Four of a kind",
+  "Full house",
+  "Small Straight",
+  "Large Straight",
+  "Yahtzee",
+  "Chance",
+  "Total",
+];
+
+const table = document.getElementById("score-table");
+
+for (let i = 0; i < categories_names.length; i++) {
+  const row = table.insertRow();
+
+  // Add the category name to the first column
+  const categoryCell = row.insertCell(0);
+  categoryCell.textContent = categories_names[i];
+  categoryCell.className = "first-column";
+
+  for (let j = 1; j <= 2; j++) {
+    const cell = row.insertCell(j);
+    cell.classList.add("scoringCell");
+    cell.textContent = "";
+    cell.id = `${categories_ids[i].replaceAll(" ", "").toLowerCase()}-${j}`;
+    cell.onclick = function () {
+      const cellId = this.id;
+
+      //push score to the right array
+      let scoreFields;
+      if (currentPlayer === 1) scoreFields = scoreFields1;
+      else scoreFields = scoreFields2;
+
+      // Check if the score for this category has already been locked
+      if (!scoreFields[cellId]) {
+        // Calculate and display the score based on the clicked category and current dice
+        const score = functionNames[i](diceRolled);
+        this.textContent = score;
+        cell.classList.add("locked");
+
+        // Lock the score for this category
+        scoreFields[cellId] = Number(
+          document.getElementById(
+            `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
+          ).textContent
+        );
+        changePlayer();
+        console.log(scoreFields);
+
+        // You can update a separate element to show the current player's turn
+        // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
+      } else {
+        alert("Score for this category has already been locked.");
+      }
+    };
+  }
+}
+
 //events
 rollButton.addEventListener("click", function () {
-  if (rollNumber < 20) {
+  if (rollNumber < 2) {
     randomDice(), rollNumber++;
+    console.log("roll number: ", rollNumber);
+  }
+  //disable button
+  else if (rollNumber == 2) {
+    randomDice(), console.log("roll number: ", rollNumber);
+    rollButton.classList.add("disabled");
   }
 });
 
@@ -35,7 +129,6 @@ function randomDice() {
       diceRolled.push(randomNumber);
     }
   }
-  console.log(diceRolled);
   updateDiceImages();
   displaySpeculativeScore();
 }
@@ -75,18 +168,23 @@ function displaySpeculativeScore() {
   }
 }
 
-// Function to lock the score for a category
-function lockScore(category) {
-  const scoreElement = document.getElementById(`${category}-score`);
-  const lockButton =
-    scoreElement.parentElement.nextElementSibling.firstElementChild;
+//remove selected class from the dices
+function removeSelection() {
+  const viewElements = document.querySelectorAll("img");
+  viewElements.forEach((element) => {
+    element.classList.remove("selected");
+  });
+}
 
-  // Check if the score is already locked
-  if (!scoreElement.classList.contains("locked")) {
-    scoreElement.classList.add("locked");
-    lockButton.textContent = "Unlock";
-  } else {
-    scoreElement.classList.remove("locked");
-    lockButton.textContent = "Lock";
-  }
+//change Player when score is chosen
+function changePlayer() {
+  // Switch to the next player or end the game if needed
+  currentPlayer = currentPlayer === 1 ? 2 : 1;
+  rollNumber = 1;
+  removeSelection();
+  lockedDice = [false, false, false, false, false];
+  roundNumber++;
+  randomDice();
+  displaySpeculativeScore();
+  rollButton.classList.remove("disabled");
 }
