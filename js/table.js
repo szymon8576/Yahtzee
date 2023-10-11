@@ -9,6 +9,8 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
 recordingButton.addEventListener("click", () => {
   if (!isRecording) {
     startRecording();
@@ -17,25 +19,58 @@ recordingButton.addEventListener("click", () => {
   }
 });
 
-function startRecording() {
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then(function (stream) {
-      mediaRecorder = new MediaRecorder(stream);
 
-      mediaRecorder.ondataavailable = function (event) {
-        if (event.data.size > 0) {
-          audioChunks.push(event.data);
+
+function recognizeAudio(audioBlob){
+
+    let formData = new FormData();
+    formData.append("audio_data", audioBlob, "audio_data");
+
+    fetch('http://localhost:5000/speech-recognition/recognize', { method: 'POST', body: formData })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then(data => {
+      console.log('Response from server:', data);
+
+      data.forEach((value) => {
+        //get index of (first) dice with given value
+        const index = diceRolled.findIndex(element => element === value);
+        
+        // if value was found, mark it as selected
+        if (index != -1)
+        {
+          const diceElement = document.getElementById(`dice-${index + 1}`);
+          diceElement.classList.add("selected");
         }
-      };
 
-      mediaRecorder.onstop = function () {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        audioPlayer.src = audioUrl;
-      };
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 
-      mediaRecorder.start();
+}
+
+
+// Start audio recording
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        audioChunks = [];
+        recorder = new Recorder(audioContext.createMediaStreamSource(stream));
+
+        recorder.record();
+      })
+      .catch(function(error) {
+        console.error('Error accessing microphone:', error);
+      });
+      
+      
       recordingButton.textContent = "Stop Recording";
       recordingButton.insertAdjacentHTML(
         "beforeend",
@@ -43,23 +78,26 @@ function startRecording() {
       );
 
       isRecording = true;
-      console.log(mediaRecorder.state);
-    })
-    .catch(function (err) {
-      console.error("Error accessing the microphone: ", err);
-    });
-}
+
+
+  }
+
 
 function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
-    mediaRecorder.stream.getTracks()[0].stop(); // ensure mediaRecorder is properly finalised
+    if (recorder && recorder.recording) {
+      recorder.stop();
+      recorder.exportWAV(function(blob) {
+        audioPlayer.src = URL.createObjectURL(blob);
+        recognizeAudio(blob);
+
+      });
+
     recordingButton.textContent = "Start Recording ";
     recordingButton.insertAdjacentHTML(
       "beforeend",
       `<i class="fas fa-microphone" style='font-size:30px; padding:5px 8px; color:green'></i>`
     );
-    console.log(mediaRecorder.state);
     isRecording = false;
+    }
+ 
   }
-}

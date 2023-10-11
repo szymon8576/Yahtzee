@@ -1,3 +1,5 @@
+import random
+
 import librosa
 import noisereduce as nr
 import numpy as np
@@ -61,17 +63,18 @@ def predict_raw_audio(audio, used_model, k=None):
     else:
         return -1
 
-
+import soundfile as sf
 def predict_wav(audio_data, used_model, k=None):
 
     audio_data = nr.reduce_noise(y=audio_data, sr=8000)
 
     # split the audio into non-silent intervals
-    intervals = librosa.effects.split(audio_data, top_db=20)
+    intervals = librosa.effects.split(audio_data, top_db=40)
 
     # predict label for each interval
     labels = []
     for i, (start, end) in enumerate(intervals):
+        # sf.write(f"{i}.wav", (audio_data[start:end]), 8000)
         prediction_result = predict_raw_audio(audio_data[start:end], k=k, used_model=used_model)
         labels.append(int(prediction_result))
     return labels
