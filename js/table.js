@@ -5,8 +5,6 @@ const recordingButton = document.getElementById("recordingButton");
 // Get references to the HTML elements
 const audioPlayer = document.getElementById("audioPlayer");
 
-let mediaRecorder;
-let audioChunks = [];
 let isRecording = false;
 
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -63,7 +61,6 @@ function startRecording() {
       .then(function(stream) {
         audioChunks = [];
         recorder = new Recorder(audioContext.createMediaStreamSource(stream));
-
         recorder.record();
       })
       .catch(function(error) {
