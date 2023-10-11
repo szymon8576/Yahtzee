@@ -6,7 +6,6 @@ const recordingButton = document.getElementById("recordingButton");
 const audioPlayer = document.getElementById("audioPlayer");
 
 let isRecording = false;
-
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 recordingButton.addEventListener("click", () => {
