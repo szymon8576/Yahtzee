@@ -66,10 +66,15 @@ for (let i = 0; i < categories_names.length; i++) {
   for (let j = 1; j <= 2; j++) {
     const cell = row.insertCell(j);
     cell.classList.add("scoringCell");
+    cell.classList.add("pointer");
     cell.textContent = "";
     cell.id = `${categories_ids[i].replaceAll(" ", "").toLowerCase()}-${j}`;
     cell.onclick = function () {
+
       const cellId = this.id;
+
+      if(cellId.charAt(cellId.length - 1) != currentPlayer.toString())
+        return 
 
       //push score to the right array
       // let scoreFields;
@@ -163,10 +168,28 @@ function toggleLock(index) {
 function displaySpeculativeScore() {
   
   for (let i = 0; i < functionNames.length; i++) {
+    for (let playerNum = 1; playerNum <= 2; playerNum++){
+      
+      let cellId = `${functionNames[i].name.toLowerCase()}-${playerNum}`;
+      let cellContent = document.getElementById(cellId);  
 
-    let cellId = `${functionNames[i].name.toLowerCase()}-${currentPlayer}`;
+      if(Object.keys(scoreFields[playerNum]).includes(cellId)){
+        cellContent.textContent = scoreFields[playerNum][cellId];
+      }
+      else{
+        if(playerNum == currentPlayer)
+          cellContent.textContent = functionNames[i](diceRolled);
+        else
+          cellContent.textContent = ""
+      }
 
-    document.getElementById(cellId).textContent = functionNames[i](diceRolled);
+      if(playerNum == currentPlayer)
+        document.getElementById(cellId).classList.add("pointer");
+      else  
+        document.getElementById(cellId).classList.remove("pointer");
+
+    }
+   
   }
 }
 
