@@ -8,8 +8,7 @@ let diceSelected = []; //selected dices array
 let currentDiceIndex; //dice selection/deselection
 let lockedDice = [false, false, false, false, false];
 let currentPlayer = 1;
-let scoreFields1 = {};
-let scoreFields2 = {};
+let scoreFields = {1:{}, 2:{}};
 
 //DOM Elements
 const diceArea = document.getElementsByClassName("dice-display");
@@ -73,25 +72,26 @@ for (let i = 0; i < categories_names.length; i++) {
       const cellId = this.id;
 
       //push score to the right array
-      let scoreFields;
-      if (currentPlayer === 1) scoreFields = scoreFields1;
-      else scoreFields = scoreFields2;
+      // let scoreFields;
+      // if (currentPlayer === 1) scoreFields = scoreFields1;
+      // else scoreFields = scoreFields2;
 
       // Check if the score for this category has already been locked
-      if (!scoreFields[cellId]) {
+      if (!Object.keys(scoreFields[currentPlayer]).includes(cellId)) {
         // Calculate and display the score based on the clicked category and current dice
         const score = functionNames[i](diceRolled);
         this.textContent = score;
         cell.classList.add("locked");
 
         // Lock the score for this category
-        scoreFields[cellId] = Number(
+        scoreFields[currentPlayer][cellId] = Number(
           document.getElementById(
             `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
           ).textContent
         );
+        console.log("appending key",cellId, "to scores of player", currentPlayer)
+        console.log(scoreFields[currentPlayer]);
         changePlayer();
-        console.log(scoreFields);
 
         // You can update a separate element to show the current player's turn
         // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
@@ -161,10 +161,12 @@ function toggleLock(index) {
 
 //display score that is possible from currently visible dices
 function displaySpeculativeScore() {
+  
   for (let i = 0; i < functionNames.length; i++) {
-    document.getElementById(
-      `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
-    ).textContent = functionNames[i](diceRolled);
+
+    let cellId = `${functionNames[i].name.toLowerCase()}-${currentPlayer}`;
+
+    document.getElementById(cellId).textContent = functionNames[i](diceRolled);
   }
 }
 
