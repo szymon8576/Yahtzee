@@ -160,11 +160,23 @@ function toggleLock(index) {
 }
 
 //display score that is possible from currently visible dices
+
 function displaySpeculativeScore() {
   for (let i = 0; i < functionNames.length; i++) {
-    document.getElementById(
-      `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
-    ).textContent = functionNames[i](diceRolled);
+    let cellId = `${functionNames[i].name.toLowerCase()}-${currentPlayer}`;
+
+    if (Object.keys(scoreFields${currentPlayer}).includes(cellId))
+      console.log(Object.keys(`scoreFields${currentPlayer}`).includes(cellId));
+    else
+      document.getElementById(cellId).textContent =
+        functionNames[i](diceRolled);
+
+    console.log("CellID clicked", Object.keys(`scoreFields${currentPlayer}`).includes(cellId)`));
+    console.log(`${functionNames[i].name.toLowerCase()}-${currentPlayer}`);
+    console.log(`scoreFields${currentPlayer}`.hasOwnProperty(
+        `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
+      )
+    );
   }
 }
 
