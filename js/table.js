@@ -97,3 +97,31 @@ function stopRecording() {
     }
  
   }
+
+  function getCookieValue(cookieName) {
+    const name = cookieName + '=';
+    const cookieArray = document.cookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return '';
+  }
+
+  const socket = io('http://localhost:5000', {
+    query: {
+        user_uuid: getCookieValue("uuid"),
+        room_id: getCookieValue("table_id"),
+    }
+});
+
+
+
+socket.on('update', (data) => {
+  console.log('New table state:', data);
+});

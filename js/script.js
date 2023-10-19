@@ -33,6 +33,96 @@ function uuidv4(){
   );
 }
 
-uuid = uuidv4();
+function checkCookie(name) {
+  return document.cookie.split(';').some(cookie => {
+      return cookie.trim().startsWith(name + '=');
+  });
+}
 
-document.cookie = `uuid=${uuid}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+if (checkCookie('uuid')) {
+  console.log('Cookie with UUID already exists');
+} else {
+  uuid = uuidv4();
+  document.cookie = `uuid=${uuid}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+  console.log("Generated new UUID and saved it as a cookie.")
+}
+
+function getCookieValue(cookieName) {
+  const name = cookieName + '=';
+  const cookieArray = document.cookie.split(';');
+  for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i];
+      while (cookie.charAt(0) === ' ') {
+          cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+      }
+  }
+  return '';
+}
+
+
+function createTable(){
+
+    // Create a URL with the query parameter
+    const url = `http://localhost:5000/game/create-table`;
+    const requestData = {user_uuid: getCookieValue('uuid')}
+
+    // Make a POST request using the fetch API
+    fetch(url, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json', // Adjust the content type as needed
+      },
+      body: JSON.stringify(requestData), 
+    })
+      .then(response => response.json()) // Parse the response as JSON
+      .then(data => {
+          console.log('Response data:', data);
+          document.getElementById("assigned-room-id").textContent = `Share this code with your friend: ${data["table_id"]}`
+          document.cookie = `table_id=${data["table_id"]}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+}
+
+
+
+function joinTable(tableID){
+
+  // Create a URL with the query parameter
+  const url = `http://localhost:5000/game/join-table`;
+  const requestData = {user_uuid: getCookieValue('uuid'), table_id: tableID}
+
+  // Make a POST request using the fetch API
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json', // Adjust the content type as needed
+    },
+    body: JSON.stringify(requestData), 
+  })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+        console.log('Response data:', data);
+        document.cookie = `table_id=${tableID}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+document.getElementById("create-table-button").onclick = createTable;
+document.getElementById("join-table-button").onclick = function() {
+    const tableId = document.getElementById("table-id").value;
+    joinTable(tableId);
+};
+
+
+
+

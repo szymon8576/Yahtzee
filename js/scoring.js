@@ -118,6 +118,9 @@ rollButton.addEventListener("click", function () {
     randomDice(), console.log("roll number: ", rollNumber);
     rollButton.classList.add("disabled");
   }
+
+  socket.emit('update', {table_id:getCookieValue("table_id"), user_uuid: getCookieValue("uuid"), new_state:{"marked_dices": [1,2,3,4,5,6,7,8,9]} });
+
 });
 
 randomDice();

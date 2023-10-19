@@ -1,6 +1,7 @@
 import random
 from .gameRoom import *
 from .playersAccumulator import *
+from datetime import datetime
 
 
 class GameRoomAccumulator:
@@ -9,7 +10,7 @@ class GameRoomAccumulator:
         self.rooms = [GameRoom(room_id=room_id) for room_id in range(n_rooms)]
         self.players = PlayersAccumulator()
 
-    def check_if_can_join_room(self, room_id, user_uuid):
+    def check_if_can_join_table(self, room_id, user_uuid):
 
         if room_id not in self.get_rooms_ids():
             return {"message": f"Invalid room ID: {room_id}"}, False
@@ -24,16 +25,29 @@ class GameRoomAccumulator:
 
         return {"message": f"You can join room {room_id}"}, True
 
-    def assign_player_to_room(self, room_id, user_uuid):
+    def check_credentials(self, room_id, user_uuid):
+
+        if room_id is None or user_uuid is None:
+            return f"Room ID and user UUID cant be empty", False
+
+        if room_id not in self.get_rooms_ids():
+            return f"Room {room_id} does not exist", False
+
+        room = self.rooms[room_id]
+        if user_uuid not in [room.player1, room.player2]:
+            return f"User {user_uuid} is not assigned to room {room_id}", False
+
+        return "OK", True
+
+    def assign_player_to_room(self, room_id, user_uuid, position):
 
         room = self.rooms[room_id]
 
-        if room.player1 is None:  # waiting for opponent
+        if position == 1:
             room.player1 = user_uuid
-            return {"message": "WAIT_FOR_OPPONENT"}
-        else:                    # assigning second player and starting the game
+            room.last_time_joined = datetime.now()
+        else:
             room.player2 = user_uuid
-            return self.rooms[room_id].get_state()
 
     def remove_player_from_room(self, room_id, user_uuid):
 
@@ -49,23 +63,19 @@ class GameRoomAccumulator:
     def get_rooms_ids(self):
         return [room.id for room in self.rooms]
 
-    def get_room_state(self, room_id, user_uuid):
-
-        if room_id not in self.get_rooms_ids():
-            return {"message": f"Invalid room ID: {room_id}"}
-
-        if self.rooms[room_id].player1 != user_uuid and self.rooms[room_id].player2 != user_uuid:
-            return {"message": "Given user has no permission to get this room state"}
+    def get_room_state(self, room_id):
 
         return self.rooms[room_id].get_state()
 
-    def update_room_state(self, room_id, user_uuid, new_state):
-        if room_id not in self.get_rooms_ids():
-            return {"message": f"Invalid room ID: {room_id}"}
-
-        if self.rooms[room_id].player1 != user_uuid and self.rooms[room_id].player2 != user_uuid:
-            return {"message": "Given user has no permission to modify this room state"}
+    def update_room_state(self, room_id, new_state):
 
         self.rooms[room_id].update_state(new_state)
-
         return self.rooms[room_id].get_state()
+
+    def get_vacant_room_id(self):
+        for room in self.rooms:
+            print((datetime.now() - room.last_time_joined).seconds)
+            if (datetime.now() - room.last_time_joined).seconds > 18_000:
+                return room.id
+        return None
+

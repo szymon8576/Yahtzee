@@ -20,31 +20,44 @@ def get_rooms_data(room_id=None):
         return jsonify(gameRooms.rooms[room_id].get_state())
 
 
+@game_bp.route('/create-table', methods=["POST"])
+def create_room():
+    user_uuid = request.get_json().get('user_uuid')
+    room_id = gameRooms.get_vacant_room_id()
+
+    if room_id is not None:
+        gameRooms.assign_player_to_room(room_id, user_uuid, position=1)
+        return jsonify({"table_id": room_id})
+    else:
+        return jsonify({"error": "There are no vacant rooms left"})
+
+
+@game_bp.route('/join-table', methods=["POST"])
+def join_gameroom():
+    data = request.get_json()
+    user_uuid, table_id = data.get('user_uuid'), int(data.get('table_id'))
+    message, status = gameRooms.check_if_can_join_table(table_id, user_uuid)
+
+    if status is True:
+        gameRooms.assign_player_to_room(table_id, user_uuid, position=2)
+        return jsonify({f"You can join the room now. User who created table {table_id}": gameRooms.rooms[table_id].player1})
+    else:
+        return jsonify(message)
+
+
 @socketio.on('connect')
 def handle_connect():
-    room_id, user_uuid = int(request.args.get('room_id')), request.args.get('user_uuid')
-
-    message, join_successful = gameRooms.check_if_can_join_room(room_id, user_uuid)
-
-    if join_successful:
-        join_room(room_id)  # join websocket room
-        join_result_data = gameRooms.assign_player_to_room(room_id, user_uuid)  # join game room
-        emit("update_game_state", join_result_data, room=room_id)
-
-    else:
-        raise ConnectionRefusedError(message)
+    user_uuid, room_id = request.args.get('user_uuid'), int(request.args.get('room_id'))
+    # gameRooms.check_credentials(room_id, user_uuid)
+    print(f"User {user_uuid} joined room {room_id}")
+    join_room(room_id)
 
 
-@socketio.on('disconnect')
-def handle_disconnect():
-    room_id, user_uuid = int(request.args.get('room_id')), request.args.get('user_uuid')
-    leave_room(room_id)
-    gameRooms.remove_player_from_room(room_id, user_uuid)
-
-
-@socketio.on('update_game_state')
+@socketio.on('update')
 def handle_update_game_state(data):
-    room_id, user_uuid, new_state = data["room_id"], data["user_uuid"], data["new_state"]
+    print("Update socket-io request, ", data)
+    room_id, user_uuid, new_state = int(data["table_id"]), data["user_uuid"], data["new_state"]
 
-    updated_state = gameRooms.update_room_state(room_id, user_uuid, new_state)
-    emit('game_state_update', updated_state, room=room_id)
+    # gameRooms.check_credentials(room_id, user_uuid)
+    updated_state = gameRooms.update_room_state(room_id, new_state)
+    emit('update', updated_state, room=room_id)

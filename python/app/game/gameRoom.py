@@ -1,6 +1,7 @@
+from datetime import datetime
+
 points_categories = ["Ones", "Twos", "Threes", "Fours", "Fives", "Sixes", "Three of a Kind", "Four of a Kind", \
                     "Full House", "Small Straight", "Large Straight", "Yahtzee", "Chance", "Bonus", "Yahtzee Bonus"]
-
 
 class GameRoom:
     def __init__(self, room_id):
@@ -8,6 +9,7 @@ class GameRoom:
         self.player1, self.player2 = None, None
         self.points_board = [{category: [0,0]} for category in points_categories]
         self.marked_dices = []
+        self.last_time_joined = datetime(2000, 1, 1, 0, 0, 0)
 
     def get_state(self):
         return {
@@ -16,6 +18,7 @@ class GameRoom:
                             self.player2 if self.player2 is not None else None],
             "points": self.points_board,
             "marked_dices": self.marked_dices,
+            "last_time_joined": str(self.last_time_joined),
         }
 
     def update_state(self, new_state):
