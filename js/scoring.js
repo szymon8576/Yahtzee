@@ -4,9 +4,8 @@ let roundNumber = 1;
 
 //dice information
 let diceRolled = []; //all dice in play array
-let diceSelected = []; //selected dices array
 let currentDiceIndex; //dice selection/deselection
-let lockedDice = [false, false, false, false, false];
+let lockedDice = [false, false, false, false, false]; //selected dices array
 let currentPlayer = 1;
 let scoreFields = {1:{}, 2:{}};
 
@@ -94,9 +93,12 @@ for (let i = 0; i < categories_names.length; i++) {
             `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
           ).textContent
         );
-        console.log("appending key",cellId, "to scores of player", currentPlayer)
-        console.log(scoreFields[currentPlayer]);
+        //console.log("appending key",cellId, "to scores of player", currentPlayer)
+        //console.log(scoreFields[currentPlayer]);
+        
+        emitTableState(playerChange = true);
         changePlayer();
+
 
         // You can update a separate element to show the current player's turn
         // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
@@ -118,8 +120,6 @@ rollButton.addEventListener("click", function () {
     randomDice(), console.log("roll number: ", rollNumber);
     rollButton.classList.add("disabled");
   }
-
-  socket.emit('update', {table_id:getCookieValue("table_id"), user_uuid: getCookieValue("uuid"), new_state:{"marked_dices": [1,2,3,4,5,6,7,8,9]} });
 
 });
 
@@ -157,13 +157,20 @@ function updateDiceImages() {
 
 //lock dices on table and push to selected array
 function toggleLock(index) {
+  
   lockedDice[index] = !lockedDice[index];
-  const diceElement = document.getElementById(`dice-${index + 1}`);
-  if (lockedDice[index]) {
-    diceElement.classList.add("selected");
-    diceSelected.push();
-  } else {
-    diceElement.classList.remove("selected");
+  displaySelectedDices();
+  emitTableState();
+
+}
+
+function displaySelectedDices(){
+
+  for (let idx=0; idx < 5; idx++){
+    const diceElement = document.getElementById(`dice-${idx + 1}`);
+    if (lockedDice[idx]) diceElement.classList.add("selected");
+    else diceElement.classList.remove("selected");
+
   }
 }
 

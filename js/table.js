@@ -79,6 +79,7 @@ function startRecording() {
   }
 
 
+
 function stopRecording() {
     if (recorder && recorder.recording) {
       recorder.stop();
@@ -122,6 +123,3 @@ function stopRecording() {
 
 
 
-socket.on('update', (data) => {
-  console.log('New table state:', data);
-});
