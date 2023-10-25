@@ -81,35 +81,16 @@ function chance(dice) {
 }
 
 function upperTableTotal() {
-  let sum = 0;
-  for (let i = 0; i <= 5; i++) {
-    sum += Number(
-      document.getElementById(
-        `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
-      ).textContent
-    );
-  }
-  return sum;
+  return "";
 }
 
 function bonus() {
-  if (upperTableTotal() >= 63) return 35;
-  else return 0;
+  return "";
 }
 
 //so far it adds up all the numbers from upper table total
 function total(dice) {
-  let sum = 0;
-  for (let i = 8; i <= 15; i++) {
-    sum += Number(
-      document.getElementById(
-        `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
-      ).textContent
-    );
-  }
-  sum += upperTableTotal();
-  sum += bonus();
-  return sum;
+  return "";
 }
 
 const functionNames = [

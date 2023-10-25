@@ -1,13 +1,13 @@
 //throw and round number
 let rollNumber = 1;
-let roundNumber = 1;
+let roundNumber = 0; //everyone has 13 rounds do 26 in total
 
 //dice information
 let diceRolled = []; //all dice in play array
 let currentDiceIndex; //dice selection/deselection
 let lockedDice = [false, false, false, false, false]; //selected dices array
 let currentPlayer = 1;
-let scoreFields = {1:{}, 2:{}};
+let scoreFields = { 1: {}, 2: {} };
 
 //DOM Elements
 const diceArea = document.getElementsByClassName("dice-display");
@@ -69,11 +69,9 @@ for (let i = 0; i < categories_names.length; i++) {
     cell.textContent = "";
     cell.id = `${categories_ids[i].replaceAll(" ", "").toLowerCase()}-${j}`;
     cell.onclick = function () {
-
       const cellId = this.id;
 
-      if(cellId.charAt(cellId.length - 1) != currentPlayer.toString())
-        return 
+      if (cellId.charAt(cellId.length - 1) != currentPlayer.toString()) return;
 
       //push score to the right array
       // let scoreFields;
@@ -93,15 +91,17 @@ for (let i = 0; i < categories_names.length; i++) {
             `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
           ).textContent
         );
-        //console.log("appending key",cellId, "to scores of player", currentPlayer)
+        //console.log( "appending key",cellId, "to scores of player", currentPlayer);
         //console.log(scoreFields[currentPlayer]);
-        
-        emitTableState(playerChange = true);
-        changePlayer();
 
+        emitTableState((playerChange = true));
+        changePlayer();
 
         // You can update a separate element to show the current player's turn
         // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
+        //display score for upper table
+        calculateAndDisplaySum(1);
+        calculateAndDisplaySum(2);
       } else {
         alert("Score for this category has already been locked.");
       }
@@ -120,7 +120,6 @@ rollButton.addEventListener("click", function () {
     randomDice(), console.log("roll number: ", rollNumber);
     rollButton.classList.add("disabled");
   }
-
 });
 
 randomDice();
@@ -157,49 +156,43 @@ function updateDiceImages() {
 
 //lock dices on table and push to selected array
 function toggleLock(index) {
-  
   lockedDice[index] = !lockedDice[index];
   displaySelectedDices();
   emitTableState();
-
 }
 
-function displaySelectedDices(){
-
-  for (let idx=0; idx < 5; idx++){
+function displaySelectedDices() {
+  for (let idx = 0; idx < 5; idx++) {
     const diceElement = document.getElementById(`dice-${idx + 1}`);
     if (lockedDice[idx]) diceElement.classList.add("selected");
     else diceElement.classList.remove("selected");
-
   }
 }
 
 //display score that is possible from currently visible dices
 function displaySpeculativeScore() {
-  
   for (let i = 0; i < functionNames.length; i++) {
-    for (let playerNum = 1; playerNum <= 2; playerNum++){
-      
+    for (let playerNum = 1; playerNum <= 2; playerNum++) {
       let cellId = `${functionNames[i].name.toLowerCase()}-${playerNum}`;
-      let cellContent = document.getElementById(cellId);  
+      let cellContent = document.getElementById(cellId);
 
-      if(Object.keys(scoreFields[playerNum]).includes(cellId)){
+      //make an exception for totals
+      if (Object.keys(scoreFields[playerNum]).includes(cellId)) {
         cellContent.textContent = scoreFields[playerNum][cellId];
-      }
-      else{
-        if(playerNum == currentPlayer)
+      } else {
+        if (playerNum == currentPlayer)
           cellContent.textContent = functionNames[i](diceRolled);
-        else
-          cellContent.textContent = ""
+        else if (
+          cellId != `uppertabletotal-${playerNum}` &&
+          cellId != `total-${playerNum}`
+        )
+          cellContent.textContent = "";
       }
 
-      if(playerNum == currentPlayer)
+      if (playerNum == currentPlayer)
         document.getElementById(cellId).classList.add("pointer");
-      else  
-        document.getElementById(cellId).classList.remove("pointer");
-
+      else document.getElementById(cellId).classList.remove("pointer");
     }
-   
   }
 }
 
@@ -222,4 +215,58 @@ function changePlayer() {
   randomDice();
   displaySpeculativeScore();
   rollButton.classList.remove("disabled");
+  endGame();
+}
+
+//display total upper table sum
+function calculateAndDisplaySum(currentPlayer) {
+  const sumCategories = ["ones", "twos", "threes", "fours", "fives", "sixes"];
+  let totalSum = 0;
+
+  for (const category of sumCategories) {
+    const categoryScores = scoreFields[currentPlayer];
+
+    // Check if the category has a score, and it's not locked
+    if (categoryScores[`${category}-${currentPlayer}`] !== undefined) {
+      totalSum += categoryScores[`${category}-${currentPlayer}`];
+    }
+  }
+
+  // Display the total sum in a designated cell
+  document.getElementById(`uppertabletotal-${currentPlayer}`).textContent =
+    totalSum;
+
+  // Calculate and display bonus
+  const bonus = totalSum >= 63 ? 35 : 0;
+  const bonusCell = document.getElementById(`bonus-${currentPlayer}`);
+
+  bonusCell.textContent = bonus;
+  if (bonus != 0) {
+    bonusCell.classList.add("bonusBold");
+  }
+
+  //display Total Sum
+  const totalCell = document.getElementById(`total-${currentPlayer}`);
+  let totalGame = 0;
+
+  for (const category in scoreFields[currentPlayer]) {
+    console.log(category);
+    totalGame += scoreFields[currentPlayer][category];
+  }
+
+  totalGame += bonus; //add bonus
+  totalCell.textContent = totalGame;
+}
+
+//end the game and show who won
+function endGame() {
+  let total1 = document.getElementById("total-1").textContent;
+  let total2 = document.getElementById("total-2").textContent;
+  console.log(total1, total2);
+
+  if (roundNumber == 26) {
+    if (total1 > total2) alert(`Player 1 won: ${total1}`);
+    else if (total1 < total2) alert(`Player 2 won: ${total2}`);
+    else alert("Tie");
+  }
 }

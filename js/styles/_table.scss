@@ -142,4 +142,14 @@ table {
 }
 .disabled {
   opacity: 0.5;
+  pointer-events: none;
+}
+
+#uppertabletotal-1,
+#uppertabletotal-2,
+.bonusBold,
+#total-1,
+#total-2 {
+  color: rgb(28, 14, 14);
+  font-weight: 700;
 }
