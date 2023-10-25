@@ -1,6 +1,6 @@
 //throw and round number
 let rollNumber = 1;
-let roundNumber = 0; //everyone has 13 rounds do 26 in total
+let roundNumber = 1; //everyone has 13 rounds do 26 in total
 
 //dice information
 let diceRolled = []; //all dice in play array
@@ -99,6 +99,7 @@ for (let i = 0; i < categories_names.length; i++) {
         // calculateAndDisplaySum(2);
 
         emitTableState((playerChange = true));
+        endGame();
         changePlayer();
 
         calculateAndDisplaySum(1);
@@ -219,7 +220,6 @@ function changePlayer() {
   randomDice();
   displaySpeculativeScore();
   rollButton.classList.remove("disabled");
-  endGame();
 }
 
 //display total upper table sum
@@ -254,7 +254,7 @@ function calculateAndDisplaySum(currentPlayer) {
   let totalGame = 0;
 
   for (const category in scoreFields[currentPlayer]) {
-    console.log(category);
+    //console.log(category);
     totalGame += scoreFields[currentPlayer][category];
   }
 
@@ -264,13 +264,13 @@ function calculateAndDisplaySum(currentPlayer) {
 
 //end the game and show who won
 function endGame() {
-  let total1 = Number(document.getElementById("total-1").textContent);
-  let total2 = Number(document.getElementById("total-2").textContent);
-  console.log(typeof total1, total1, typeof total2, total2);
+  if (roundNumber == 12) {
+    let total1 = Number(document.getElementById("total-1").textContent);
+    let total2 = Number(document.getElementById("total-2").textContent);
+    console.log(typeof total1, total1, typeof total2, total2);
 
-  if (roundNumber == 10) {
     if (total1 > total2) console.log(`Player 1 won: ${total1}`);
-    else if (total1 < total2) alert(`Player 2 won: ${total2}`);
-    else alert("Tie");
+    else if (total1 < total2) console.log(`Player 2 won: ${total2}`);
+    else console.log("Tie");
   }
 }
