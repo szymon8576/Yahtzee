@@ -99,11 +99,14 @@ for (let i = 0; i < categories_names.length; i++) {
         // calculateAndDisplaySum(2);
 
         emitTableState((playerChange = true));
-        endGame();
-        changePlayer();
-
+        
         calculateAndDisplaySum(1);
         calculateAndDisplaySum(2);
+
+        if(roundNumber==12) endGame();
+        else changePlayer();
+
+        
 
         // You can update a separate element to show the current player's turn
         // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
@@ -178,8 +181,17 @@ function displaySelectedDices() {
 function displaySpeculativeScore() {
   for (let i = 0; i < functionNames.length; i++) {
     for (let playerNum = 1; playerNum <= 2; playerNum++) {
+
+      if (functionNames[i].name == "upperTableTotal" || functionNames[i].name == "total") 
+      {
+       
+        continue;
+      }
+      
+
       let cellId = `${functionNames[i].name.toLowerCase()}-${playerNum}`;
       let cellContent = document.getElementById(cellId);
+
 
       //make an exception for totals
       if (Object.keys(scoreFields[playerNum]).includes(cellId)) {
@@ -187,11 +199,7 @@ function displaySpeculativeScore() {
       } else {
         if (playerNum == currentPlayer)
           cellContent.textContent = functionNames[i](diceRolled);
-        else if (
-          cellId != `uppertabletotal-${playerNum}` &&
-          cellId != `total-${playerNum}`
-        )
-          cellContent.textContent = "";
+        else  cellContent.textContent = "";
       }
 
       if (playerNum == currentPlayer)
@@ -264,7 +272,7 @@ function calculateAndDisplaySum(currentPlayer) {
 
 //end the game and show who won
 function endGame() {
-  if (roundNumber == 12) {
+
     let total1 = Number(document.getElementById("total-1").textContent);
     let total2 = Number(document.getElementById("total-2").textContent);
     console.log(typeof total1, total1, typeof total2, total2);
@@ -272,5 +280,5 @@ function endGame() {
     if (total1 > total2) console.log(`Player 1 won: ${total1}`);
     else if (total1 < total2) console.log(`Player 2 won: ${total2}`);
     else console.log("Tie");
-  }
+
 }

@@ -80,8 +80,10 @@ function chance(dice) {
   return dice.reduce((sum, num) => sum + num, 0);
 }
 
-function upperTableTotal() {
+function upperTableTotal(player) {
+  
   return "";
+  
 }
 
 function bonus() {

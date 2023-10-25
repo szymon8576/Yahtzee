@@ -1,9 +1,4 @@
-//change the icon on recording button
 const recordingButton = document.getElementById("recordingButton");
-
-//Record audio when button is clicked
-// Get references to the HTML elements
-const audioPlayer = document.getElementById("audioPlayer");
 
 let isRecording = false;
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -36,13 +31,13 @@ function recognizeAudio(audioBlob){
 
       data.forEach((value) => {
         //get index of (first) dice with given value
-        const index = diceRolled.findIndex(element => element === value);
+        const index = diceRolled.findIndex((element, i) => (element === value) & lockedDice[i] == false);
         
         // if value was found, mark it as selected
         if (index != -1)
         {
-          const diceElement = document.getElementById(`dice-${index + 1}`);
-          diceElement.classList.add("selected");
+          lockedDice[index] = true;
+          displaySelectedDices();
         }
 
       });
@@ -84,7 +79,7 @@ function stopRecording() {
     if (recorder && recorder.recording) {
       recorder.stop();
       recorder.exportWAV(function(blob) {
-        audioPlayer.src = URL.createObjectURL(blob);
+        console.log(blob);
         recognizeAudio(blob);
 
       });
