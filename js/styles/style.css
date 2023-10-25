@@ -57,6 +57,9 @@ table th {
   align-items: center;
 }
 
+.dice-display {
+  opacity: 1;
+}
 .dice-display div {
   width: 100px;
   height: 100px;
@@ -117,6 +120,7 @@ table th {
   background-color: rgb(212, 35, 35);
   border: none;
   border-radius: 5px;
+  opacity: 1;
 }
 #rollDice i {
   font-size: 20px;

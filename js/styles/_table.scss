@@ -59,6 +59,7 @@ table {
 }
 
 .dice-display {
+  opacity: 1;
   div {
     width: 100px;
     height: 100px;
@@ -118,6 +119,7 @@ table {
   background-color: rgb(212, 35, 35);
   border: none;
   border-radius: 5px;
+  opacity: 1;
   i {
     font-size: 20px;
     color: white;

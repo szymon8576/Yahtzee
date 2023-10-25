@@ -94,14 +94,18 @@ for (let i = 0; i < categories_names.length; i++) {
         //console.log( "appending key",cellId, "to scores of player", currentPlayer);
         //console.log(scoreFields[currentPlayer]);
 
+        //display score for upper table
+        // calculateAndDisplaySum(1);
+        // calculateAndDisplaySum(2);
+
         emitTableState((playerChange = true));
         changePlayer();
 
-        // You can update a separate element to show the current player's turn
-        // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
-        //display score for upper table
         calculateAndDisplaySum(1);
         calculateAndDisplaySum(2);
+
+        // You can update a separate element to show the current player's turn
+        // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
       } else {
         alert("Score for this category has already been locked.");
       }
@@ -207,11 +211,11 @@ function removeSelection() {
 //change Player when score is chosen
 function changePlayer() {
   // Switch to the next player or end the game if needed
+  roundNumber++;
   currentPlayer = currentPlayer === 1 ? 2 : 1;
   rollNumber = 1;
   removeSelection();
   lockedDice = [false, false, false, false, false];
-  roundNumber++;
   randomDice();
   displaySpeculativeScore();
   rollButton.classList.remove("disabled");
@@ -260,12 +264,12 @@ function calculateAndDisplaySum(currentPlayer) {
 
 //end the game and show who won
 function endGame() {
-  let total1 = document.getElementById("total-1").textContent;
-  let total2 = document.getElementById("total-2").textContent;
-  console.log(total1, total2);
+  let total1 = Number(document.getElementById("total-1").textContent);
+  let total2 = Number(document.getElementById("total-2").textContent);
+  console.log(typeof total1, total1, typeof total2, total2);
 
-  if (roundNumber == 26) {
-    if (total1 > total2) alert(`Player 1 won: ${total1}`);
+  if (roundNumber == 10) {
+    if (total1 > total2) console.log(`Player 1 won: ${total1}`);
     else if (total1 < total2) alert(`Player 2 won: ${total2}`);
     else alert("Tie");
   }
