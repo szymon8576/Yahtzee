@@ -81,12 +81,10 @@ function chance(dice) {
 }
 
 function upperTableTotal(player) {
-  
   return "";
-  
 }
 
-function bonus() {
+function bonus(player) {
   return "";
 }
 

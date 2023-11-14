@@ -144,6 +144,7 @@ body {
 }
 .game-tables-btn {
   display: flex;
+  flex-direction: column;
   margin: 40px;
   justify-content: center;
   align-items: center;
@@ -159,18 +160,19 @@ body {
   margin: 10px 20px;
 }
 .table-btn {
-  width: 100px;
   padding: 10px 20px;
   border: solid 2px rgb(8, 8, 133);
   background-color: $background-color_5;
   color: $color_4;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 20px;
+  font-weight: normal;
+  font-size: 16px;
   transition: all 0.4s ease-out;
   &:hover {
     background-color: pink;
     transition: all 0.4s ease-out;
+    color: black !important;
+    border: solid 2px transparent;
   }
 }
 
@@ -192,4 +194,10 @@ body {
     margin-top: 20px;
     justify-content: center;
   }
+}
+
+#table-id {
+  height: 30px;
+  margin-bottom: 20px;
+  text-align: center;
 }
