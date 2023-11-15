@@ -45,7 +45,8 @@ if (checkCookie('uuid')) {
   console.log('Cookie with UUID already exists');
 } else {
   uuid = uuidv4();
-  document.cookie = `uuid=${uuid}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+
+  setCookie("uuid", uuid);
   console.log("Generated new UUID and saved it as a cookie.")
 }
 
@@ -93,8 +94,8 @@ function createTable(){
   })
       .then(data => {
           console.log('Response data:', data);
-          document.cookie = `table_id=${data["table_id"]}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
-          document.cookie = `user_position=1; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+          setCookie("table_id", data["table_id"]);
+          setCookie("user_position", "1")
           window.location.href = "/js/table.html";
           // window.location.replace("/js/table.html");
 
@@ -103,6 +104,14 @@ function createTable(){
           console.error('Error:', error);
           alert(error);
       });
+}
+
+function setCookie(fieldname, value, expirationHours=1)
+{
+  var expirationDate = new Date();
+  expirationDate.setHours(expirationDate.getHours() + expirationHours);
+  var formattedExpiration = expirationDate.toUTCString();
+  document.cookie = `${fieldname}=${value}; expires=${formattedExpiration}; path=/`;
 }
 
 
@@ -137,8 +146,8 @@ function joinTable(tableID){
     })
     .then(data => {
         console.log('Response data:', data);
-        document.cookie = `table_id=${tableID}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
-        document.cookie = `user_position=2; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+        setCookie("table_id", tableID);
+        setCookie("user_position", "2");
         window.location.href = "/js/table.html";
 
     })
@@ -175,3 +184,8 @@ function validateNumberInput(input) {
 }
 
 
+let lastTableInfoPlaceholder = document.getElementById("last-room-info")
+
+if (checkCookie("table_id") && checkCookie("user_position")){
+  lastTableInfoPlaceholder.innerHTML = `Looks like you have been in room ${getCookieValue("table_id")} recently. If you wish, you can <a href="./table.html"> resume this game.</a>`;
+}
