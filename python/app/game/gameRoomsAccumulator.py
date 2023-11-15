@@ -6,7 +6,7 @@ from datetime import datetime
 
 class GameRoomAccumulator:
 
-    def __init__(self, n_rooms=10):
+    def __init__(self, n_rooms=100):
         self.rooms = [GameRoom(room_id=room_id) for room_id in range(n_rooms)]
         self.players = PlayersAccumulator()
 
@@ -66,6 +66,13 @@ class GameRoomAccumulator:
     def get_room_state(self, room_id):
 
         return self.rooms[room_id].get_state()
+
+    def check_if_two_players_in_room(self, room_id):
+        if self.rooms[room_id].player1 and self.rooms[room_id].player2:
+            return True
+        else:
+            return False
+
 
     def update_room_state(self, room_id, new_state):
 

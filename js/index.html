@@ -39,7 +39,8 @@
     <h1 id="assigned-room-id"></h1>
 
     <h2>Your friend already created a table? Write its ID:</h2>
-    <input id="table-id" placeholder="Table ID"></input>
+    <input id="table-id" oninput="validateNumberInput(this)" placeholder="Table ID"></input>
+    <h4 id="errorMessage"></h4>
     <button id="join-table-button" class="table-btn">Join this table</button>
 </div>
 </div>

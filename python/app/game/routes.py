@@ -42,7 +42,7 @@ def join_gameroom():
         gameRooms.assign_player_to_room(table_id, user_uuid, position=2)
         return jsonify({f"You can join the room now. User who created table {table_id}": gameRooms.rooms[table_id].player1})
     else:
-        return jsonify(message)
+        return jsonify(message), 404
 
 
 @socketio.on('connect')
@@ -51,6 +51,11 @@ def handle_connect():
     # gameRooms.check_credentials(room_id, user_uuid)
     print(f"User {user_uuid} joined room {room_id}")
     join_room(room_id)
+
+    if gameRooms.check_if_two_players_in_room(room_id):
+        emit('update', gameRooms.get_room_state(room_id), room=room_id)
+    else:
+        emit('update', {}, room=room_id)
 
 
 @socketio.on('update')

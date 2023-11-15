@@ -80,12 +80,14 @@ function createTable(){
       .then(response => response.json()) // Parse the response as JSON
       .then(data => {
           console.log('Response data:', data);
-          document.getElementById("assigned-room-id").textContent = `Share this code with your friend: ${data["table_id"]}`
           document.cookie = `table_id=${data["table_id"]}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+          document.cookie = `user_position=1; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+          window.location.href = "/js/table.html";
 
       })
       .catch(error => {
           console.error('Error:', error);
+          alert(error);
       });
 }
 
@@ -103,26 +105,58 @@ function joinTable(tableID){
     headers: {
         'Content-Type': 'application/json', // Adjust the content type as needed
     },
-    body: JSON.stringify(requestData), 
-  })
-    .then(response => response.json()) // Parse the response as JSON
+    body: JSON.stringify(requestData),
+})
+    .then(response => {
+        if (!response.ok) {
+            if (response.status === 404) {
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message);
+                });
+            } else {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Response data:', data);
         document.cookie = `table_id=${tableID}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+        document.cookie = `user_position=2; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+        window.location.href = "/js/table.html";
+
     })
     .catch(error => {
         console.error('Error:', error);
+        alert(error.message);
     });
+
 }
 
-
-
 document.getElementById("create-table-button").onclick = createTable;
+document.getElementById("join-table-button").disabled = true;
 document.getElementById("join-table-button").onclick = function() {
     const tableId = document.getElementById("table-id").value;
     joinTable(tableId);
 };
 
 
+function validateNumberInput(input) {
+
+  var errorMessage = document.getElementById('errorMessage');
+  console.log(input.value, isNaN(input.value));
+  
+  if(input.value==""){
+    document.getElementById("join-table-button").disabled=true;
+  }
+  else if (isNaN(input.value)) {
+    errorMessage.textContent = 'Room code cant contain characters other than digits.';
+    document.getElementById("join-table-button").disabled=true;
+      
+  } else {
+    errorMessage.textContent = '';
+    document.getElementById("join-table-button").disabled=false;
+  }
+}
 
 

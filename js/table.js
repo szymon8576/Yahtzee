@@ -1,3 +1,5 @@
+const userPosition = getCookieValue("user_position");
+
 const recordingButton = document.getElementById("recordingButton");
 
 let isRecording = false;
@@ -51,7 +53,7 @@ function recognizeAudio(audioBlob){
 
 // Start audio recording
 function startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia({ audio: true, noiseSuppression: false, echoCancellation: false,  })
       .then(function(stream) {
         audioChunks = [];
         recorder = new Recorder(audioContext.createMediaStreamSource(stream));
@@ -116,5 +118,7 @@ function stopRecording() {
     }
 });
 
+
+if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend:${getCookieValue("table_id")}`
 
 

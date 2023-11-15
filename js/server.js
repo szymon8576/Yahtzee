@@ -34,22 +34,37 @@ function getTableState(){
   socket.on('update', (data) => {
     console.log('New table state:', data);
 
-    diceRolled = data["rolledDices"];
-    updateDiceImages();
+    //this condition means that room is not full yet, so we shouldn't display the table
+    if (Object.keys(data).length == 0)
+    {
+      document.getElementsByClassName("game-body")[0].style.display="none"; //TODO make game-body hidden by default
+    }
+    else{
 
-    lockedDice = data["lockedDices"];
-    displaySelectedDices();
+      document.getElementsByClassName("game-body")[0].style.display="flex";
+      document.getElementById("gameStatus").innerText="";
+      document.getElementById("gameStatus").style.display="none";
 
 
-    for (let [cellId, cellValue] of Object.entries(data["scores"])) {
-        console.log(cellId, cellValue);
-      }
+      diceRolled = data["rolledDices"];
+      updateDiceImages();
+  
+      lockedDice = data["lockedDices"];
+      displaySelectedDices();
+  
+  
+      for (let [cellId, cellValue] of Object.entries(data["scores"])) {
+          console.log(cellId, cellValue);
+        }
+  
+      scoreFields = data["scoreFields"]
+  
+      // currentPlayer = data["current_player"]
+      displaySpeculativeScore();
+  
+    }
 
-    scoreFields = data["scoreFields"]
-
-    // currentPlayer = data["current_player"]
-    displaySpeculativeScore();
-
+    
     
 
 

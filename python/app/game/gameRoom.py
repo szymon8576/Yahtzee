@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 
 categories = ['total', 'twos', 'fours', 'fullhouse', 'uppertabletotal', 'threes', 'fives',
@@ -11,7 +12,7 @@ class GameRoom:
         self.player1, self.player2 = None, None
         self.scores = { c: 0 for c in player_cells}
         self.locked_scores = {}
-        self.rolled_dices, self.marked_dices = [], []
+        self.rolled_dices, self.marked_dices = [1,1,1,1,1], []
         self.last_time_joined = datetime(2000, 1, 1, 0, 0, 0)
         self.current_player = 1
 
