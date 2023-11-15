@@ -66,4 +66,4 @@ class GameRoom:
 
     @property
     def is_active(self):
-        return (datetime.now() - self.last_time_joined).seconds < 18_000
+        return (datetime.now() - self.last_time_joined).total_seconds() < 18_000

@@ -4,11 +4,13 @@ from .playersAccumulator import *
 from datetime import datetime
 
 
+
 class GameRoomAccumulator:
 
-    def __init__(self, n_rooms=100):
+    def __init__(self, n_rooms=20):
         self.rooms = [GameRoom(room_id=room_id) for room_id in range(n_rooms)]
         self.players = PlayersAccumulator()
+
 
     def check_if_can_join_table(self, room_id, user_uuid):
 
@@ -83,7 +85,7 @@ class GameRoomAccumulator:
         return self.rooms[room_id].get_state()
 
     def get_vacant_room_id(self):
-        for room in self.rooms:
+        for room in self.rooms[::-1]:
             if not room.is_active:
                 return room.id
         return None

@@ -66,11 +66,13 @@ function getCookieValue(cookieName) {
 }
 
 
-function createTable(){
+function createTable(bot=false){
+
+    console.log("creating table, bot=", bot);
 
     // Create a URL with the query parameter
     const url = `http://localhost:5000/game/create-table`;
-    const requestData = {user_uuid: getCookieValue('uuid')}
+    const requestData = {user_uuid: getCookieValue('uuid'), bot: bot}
 
     // Make a POST request using the fetch API
     fetch(url, {
@@ -84,6 +86,7 @@ function createTable(){
       if (!response.ok) {
           if (response.status === 403) {
               return response.json().then(errorData => {
+                  console.log(response.json());
                   throw new Error(errorData.message);
               });
           } else {
@@ -96,6 +99,8 @@ function createTable(){
           console.log('Response data:', data);
           setCookie("table_id", data["table_id"]);
           setCookie("user_position", "1")
+          if (bot)setCookie("game_mode", "bot");
+          else setCookie("game_mode", "multiplayer");
           window.location.href = "/js/table.html";
           // window.location.replace("/js/table.html");
 
@@ -148,6 +153,7 @@ function joinTable(tableID){
         console.log('Response data:', data);
         setCookie("table_id", tableID);
         setCookie("user_position", "2");
+        setCookie("game_mode", "multiplayer");
         window.location.href = "/js/table.html";
 
     })
@@ -158,7 +164,13 @@ function joinTable(tableID){
 
 }
 
-document.getElementById("create-table-button").onclick = createTable;
+document.getElementById("bot-button").onclick = function() {createTable(true);
+};
+
+document.getElementById("create-table-button").onclick =function(){ createTable(false);
+}
+
+
 document.getElementById("join-table-button").onclick = function() {
     const tableId = document.getElementById("table-id").value;
     joinTable(tableId);

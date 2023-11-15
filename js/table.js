@@ -1,4 +1,5 @@
-const userPosition = parseInt(getCookieValue("user_position"), 10);;
+const userPosition = parseInt(getCookieValue("user_position"), 10);
+const gameMode = getCookieValue("game_mode");
 
 const recordingButton = document.getElementById("recordingButton");
 
@@ -33,8 +34,8 @@ function recognizeAudio(audioBlob){
 
       data.forEach((value) => {
         //get index of (first) dice with given value
-        const index = diceRolled.findIndex((element, i) => (element === value) & lockedDice[i] == false);
-        
+        const index = diceRolled.findIndex((element, i) => (element == value) & lockedDice[i] != true);
+        console.log(diceRolled, lockedDice, index);
         // if value was found, mark it as selected
         if (index != -1)
         {

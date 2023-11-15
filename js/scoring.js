@@ -6,7 +6,7 @@ let roundNumber = 1; //everyone has 13 rounds do 26 in total
 let diceRolled = []; //all dice in play array
 let currentDiceIndex; //dice selection/deselection
 let lockedDice = [false, false, false, false, false]; //selected dices array
-let currentPlayer = 1;
+let currentPlayer = 1; //TODO
 let scoreFields = { 1: {}, 2: {} };
 
 //DOM Elements
@@ -341,36 +341,3 @@ function resetGame(){
   window.location.href = "/js";
 }
 
-// function resetGame() {
-//   // Reset variables
-//   rollNumber = 1;
-//   roundNumber = 1;
-//   diceRolled = [];
-//   currentDiceIndex = undefined;
-//   lockedDice = [false, false, false, false, false];
-//   currentPlayer = 1;
-//   scoreFields = { 1: {}, 2: {} };
-
-//   // Reset DOM elements
-//   // Replace the following lines with the actual IDs of your elements
-//   document.getElementById("rollDice").classList.remove("disabled");
-//   document.querySelector(".dice-display").innerHTML = ""; // Assuming this is a container for dice images
-
-//   const scoreCells = document.querySelectorAll(".scoringCell");
-//   scoreCells.forEach((cell) => {
-//     cell.textContent = "";
-//     // cell.classList.remove("locked");
-//   });
-
-//   const bonusCells = document.querySelectorAll(".bonusBold");
-//   bonusCells.forEach((cell) => cell.classList.remove("bonusBold"));
-
-//   // Reset total and bonus cells
-//   const totalCells = document.querySelectorAll("[id^='total-']");
-//   totalCells.forEach((cell) => (cell.textContent = ""));
-
-//   const upperTableTotalCells = document.querySelectorAll(
-//     "[id^='uppertabletotal-']"
-//   );
-//   upperTableTotalCells.forEach((cell) => (cell.textContent = ""));
-// }

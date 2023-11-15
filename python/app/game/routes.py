@@ -22,20 +22,25 @@ def get_rooms_data(room_id=None):
 
 @game_bp.route('/create-table', methods=["POST"])
 def create_room():
-    user_uuid = request.get_json().get('user_uuid')
+    user_uuid, bot = request.get_json().get('user_uuid'), request.get_json().get('bot')
 
     if len(user_uuid) == 0:
         return jsonify({"message": "Please provide valid UUID."}), 403
-    if len(gameRooms.getRoomsByUser(user_uuid))>5:
+    if len(gameRooms.getRoomsByUser(user_uuid))>10:
         return jsonify({"message": "You have reached max number of rooms per user."}), 403
 
     room_id = gameRooms.get_vacant_room_id()
+    print(room_id)
 
     if room_id is not None:
         gameRooms.assign_player_to_room(room_id, user_uuid, position=1)
+
+        print(bot)
+        if bot: gameRooms.assign_player_to_room(room_id, user_uuid="BOT-"+user_uuid, position=2)
+
         return jsonify({"table_id": room_id})
     else:
-        return jsonify({"error": "There are no vacant rooms left"})
+        return jsonify({"error": "There are no vacant rooms left"}), 403
 
 
 @game_bp.route('/join-table', methods=["POST"])
