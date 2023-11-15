@@ -1,4 +1,4 @@
-const userPosition = getCookieValue("user_position");
+const userPosition = parseInt(getCookieValue("user_position"), 10);;
 
 const recordingButton = document.getElementById("recordingButton");
 
@@ -111,12 +111,36 @@ function stopRecording() {
     return '';
   }
 
+
+  console.log("creating socket");
   const socket = io('http://localhost:5000', {
     query: {
         user_uuid: getCookieValue("uuid"),
         room_id: getCookieValue("table_id"),
     }
 });
+
+
+var isSocketConnected = false; 
+socket.on('connect', (data) => { isSocketConnected = true; socketEvent(data); console.log("connect", data)}); 
+socket.on('reconnect', (data) => { isSocketConnected  = true; socketEvent(data); console.log("reconnect", data)}); 
+socket.on('disconnect', (data) => { isSocketConnected  = false; socketEvent(data); console.log("disconnect", data) }); 
+socket.on('connect_failed', (data) => { isSocketConnected  = false; socketEvent(data); console.log("connect_failed", data) }); 
+socket.on('error', (data) => { isSocketConnected  = false; socketEvent(data); console.log("error", data) }); 
+socket.on('reconnecting', (data) => { isSocketConnected  = false; socketEvent(data); console.log("reconnecting", data) }); 
+socket.on('connect_error', (data) => { isSocketConnected  = false; socketEvent(data); console.log("connect_error", data) }); 
+socket.on('connect_timeout', (data) => { isSocketConnected  = false; socketEvent(data); console.log("connect_timeout", data) }); 
+socket.on('reconnect_error', (data) => { isSocketConnected  = false; socketEvent(data); console.log("reconnect_error", data) }); 
+socket.on('reconnect_failed', (data) => { isSocketConnected  = false; socketEvent(data); console.log("reconnect_failed", data) }); 
+
+
+
+const socketEvent = (data) => { 
+    if(!isSocketConnected){
+      alert(`Couldn't connect with game table (${data})`)
+      window.location.href = "/js";
+    }
+}
 
 
 if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend:${getCookieValue("table_id")}`

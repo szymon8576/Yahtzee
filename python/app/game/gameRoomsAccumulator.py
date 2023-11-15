@@ -17,6 +17,9 @@ class GameRoomAccumulator:
 
         room = self.rooms[room_id]
 
+        if room.player1 is None:
+            return {"message": f"Room {room_id}  hasn't been created yet."}, False
+
         if room.player1 is not None and room.player2 is not None:
             return {"message": f"Room {room_id} is full"}, False
 
@@ -81,8 +84,10 @@ class GameRoomAccumulator:
 
     def get_vacant_room_id(self):
         for room in self.rooms:
-            print((datetime.now() - room.last_time_joined).seconds)
-            if (datetime.now() - room.last_time_joined).seconds > 18_000:
+            if not room.is_active:
                 return room.id
         return None
+
+    def getRoomsByUser(self, user_uuid):
+        return [room for room in self.rooms if (room.player1 == user_uuid and room.is_active)]
 

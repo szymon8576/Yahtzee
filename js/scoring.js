@@ -71,19 +71,19 @@ for (let i = 0; i < categories_names.length; i++) {
     cell.onclick = function () {
       const cellId = this.id;
 
-      if (cellId.charAt(cellId.length - 1) != currentPlayer.toString()) return;
+      if (!(userPosition == j && j  == currentPlayer)) return;
+      
+      if (/total|bonus|upper/i.test(cellId)) {
+        return;
+      }
 
-      //push score to the right array
-      // let scoreFields;
-      // if (currentPlayer === 1) scoreFields = scoreFields1;
-      // else scoreFields = scoreFields2;
 
       // Check if the score for this category has already been locked
       if (!Object.keys(scoreFields[currentPlayer]).includes(cellId)) {
         // Calculate and display the score based on the clicked category and current dice
         const score = functionNames[i](diceRolled);
         this.textContent = score;
-        cell.classList.add("locked");
+        // cell.classList.add("locked");
 
         // Lock the score for this category
         scoreFields[currentPlayer][cellId] = Number(
@@ -91,23 +91,15 @@ for (let i = 0; i < categories_names.length; i++) {
             `${functionNames[i].name.toLowerCase()}-${currentPlayer}`
           ).textContent
         );
-        //console.log( "appending key",cellId, "to scores of player", currentPlayer);
-        //console.log(scoreFields[currentPlayer]);
-
-        //display score for upper table
-        // calculateAndDisplaySum(1);
-        // calculateAndDisplaySum(2);
 
         emitTableState((playerChange = true));
 
         calculateAndDisplaySum(1);
         calculateAndDisplaySum(2);
 
-        if (roundNumber == 26) endGame();
-        else changePlayer();
+        changePlayer();
 
-        // You can update a separate element to show the current player's turn
-        // For example: document.getElementById("current-player").textContent = `Player ${currentPlayer}'s Turn`;
+
       } else {
         alert("Score for this category has already been locked.");
       }
@@ -115,8 +107,20 @@ for (let i = 0; i < categories_names.length; i++) {
   }
 }
 
+
+function boldLockedScoreFields(){
+
+  for (let playerNum = 1; playerNum <= 2; playerNum++) {
+    Object.keys(scoreFields[playerNum]).forEach((cellId) => {
+      document.getElementById(cellId).classList.add("locked");
+    });
+  }
+
+}
+
 //events
 rollButton.addEventListener("click", function () {
+
   if (rollNumber < 2) {
     randomDice(), rollNumber++;
     console.log("roll number: ", rollNumber);
@@ -126,9 +130,11 @@ rollButton.addEventListener("click", function () {
     randomDice(), console.log("roll number: ", rollNumber);
     rollButton.classList.add("disabled");
   }
+
+  emitTableState();
 });
 
-randomDice();
+// randomDice();
 //Random number between 1-6
 //create array with selected values
 function randomDice() {
@@ -160,11 +166,16 @@ function updateDiceImages() {
   }
 }
 
-//lock dices on table and push to selected array
+// lock dices on table and push to selected array
+// TODO turn off dotted dice marking on hover when it is not current player's turn (when userPosition != currentPlayer )
 function toggleLock(index) {
+  
+  if (userPosition != currentPlayer) return;
+  
   lockedDice[index] = !lockedDice[index];
   displaySelectedDices();
   emitTableState();
+
 }
 
 function displaySelectedDices() {
@@ -181,25 +192,31 @@ function displaySpeculativeScore() {
     for (let playerNum = 1; playerNum <= 2; playerNum++) {
       if (
         functionNames[i].name == "upperTableTotal" ||
-        functionNames[i].name == "total"
-      ) {
-        continue;
-      }
+        functionNames[i].name == "total" ||
+        functionNames[i].name == "bonus"
+      )  continue;
+
+
+      //console.log(userPosition, playerNum, currentPlayer);
+
+      // user position - if player position at the table is left (1) or right (2)
+      // playerNum - part of for loop 
+      // currentPlayer - 1 or 2, current player info received from server
 
       let cellId = `${functionNames[i].name.toLowerCase()}-${playerNum}`;
       let cellContent = document.getElementById(cellId);
 
-      //make an exception for totals
+      //if category for given player is locked
       if (Object.keys(scoreFields[playerNum]).includes(cellId)) {
         cellContent.textContent = scoreFields[playerNum][cellId];
-      } else {
-        if (playerNum == currentPlayer)
+      } else 
+      {
+        if (playerNum  == currentPlayer) 
           cellContent.textContent = functionNames[i](diceRolled);
         else cellContent.textContent = "";
       }
 
-      if (playerNum == currentPlayer)
-        document.getElementById(cellId).classList.add("pointer");
+      if (userPosition == playerNum && playerNum  == currentPlayer)  document.getElementById(cellId).classList.add("pointer");
       else document.getElementById(cellId).classList.remove("pointer");
     }
   }
@@ -217,11 +234,11 @@ function removeSelection() {
 function changePlayer() {
   // Switch to the next player or end the game if needed
   roundNumber++;
-  currentPlayer = currentPlayer === 1 ? 2 : 1;
+  //currentPlayer = currentPlayer === 1 ? 2 : 1;
   rollNumber = 1;
   removeSelection();
-  lockedDice = [false, false, false, false, false];
-  randomDice();
+  //lockedDice = [false, false, false, false, false];
+  //randomDice();
   displaySpeculativeScore();
   rollButton.classList.remove("disabled");
 }
@@ -276,6 +293,8 @@ function calculateAndDisplaySum(currentPlayer) {
   totalCell.textContent = totalGame;
   console.log(`Total Game ${currentPlayer}:`, totalGame);
 }
+calculateAndDisplaySum(1);
+calculateAndDisplaySum(2);
 
 //end the game and show who won
 function endGame() {
@@ -308,36 +327,50 @@ function closeModal() {
   resetGame();
 }
 
-function resetGame() {
-  // Reset variables
-  rollNumber = 1;
-  roundNumber = 1;
-  diceRolled = [];
-  currentDiceIndex = undefined;
-  lockedDice = [false, false, false, false, false];
-  currentPlayer = 1;
-  scoreFields = { 1: {}, 2: {} };
 
-  // Reset DOM elements
-  // Replace the following lines with the actual IDs of your elements
-  document.getElementById("rollDice").classList.remove("disabled");
-  document.querySelector(".dice-display").innerHTML = ""; // Assuming this is a container for dice images
-
-  const scoreCells = document.querySelectorAll(".scoringCell");
-  scoreCells.forEach((cell) => {
-    cell.textContent = "";
-    cell.classList.remove("locked");
-  });
-
-  const bonusCells = document.querySelectorAll(".bonusBold");
-  bonusCells.forEach((cell) => cell.classList.remove("bonusBold"));
-
-  // Reset total and bonus cells
-  const totalCells = document.querySelectorAll("[id^='total-']");
-  totalCells.forEach((cell) => (cell.textContent = ""));
-
-  const upperTableTotalCells = document.querySelectorAll(
-    "[id^='uppertabletotal-']"
-  );
-  upperTableTotalCells.forEach((cell) => (cell.textContent = ""));
+function deleteCookie(cookieName) {
+  document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
+
+
+function resetGame(){
+ 
+  deleteCookie('table_id');
+  deleteCookie('user_position');
+  
+  window.location.href = "/js";
+}
+
+// function resetGame() {
+//   // Reset variables
+//   rollNumber = 1;
+//   roundNumber = 1;
+//   diceRolled = [];
+//   currentDiceIndex = undefined;
+//   lockedDice = [false, false, false, false, false];
+//   currentPlayer = 1;
+//   scoreFields = { 1: {}, 2: {} };
+
+//   // Reset DOM elements
+//   // Replace the following lines with the actual IDs of your elements
+//   document.getElementById("rollDice").classList.remove("disabled");
+//   document.querySelector(".dice-display").innerHTML = ""; // Assuming this is a container for dice images
+
+//   const scoreCells = document.querySelectorAll(".scoringCell");
+//   scoreCells.forEach((cell) => {
+//     cell.textContent = "";
+//     // cell.classList.remove("locked");
+//   });
+
+//   const bonusCells = document.querySelectorAll(".bonusBold");
+//   bonusCells.forEach((cell) => cell.classList.remove("bonusBold"));
+
+//   // Reset total and bonus cells
+//   const totalCells = document.querySelectorAll("[id^='total-']");
+//   totalCells.forEach((cell) => (cell.textContent = ""));
+
+//   const upperTableTotalCells = document.querySelectorAll(
+//     "[id^='uppertabletotal-']"
+//   );
+//   upperTableTotalCells.forEach((cell) => (cell.textContent = ""));
+// }

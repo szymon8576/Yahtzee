@@ -52,15 +52,30 @@ function getTableState(){
       lockedDice = data["lockedDices"];
       displaySelectedDices();
   
-  
-      for (let [cellId, cellValue] of Object.entries(data["scores"])) {
-          console.log(cellId, cellValue);
-        }
-  
       scoreFields = data["scoreFields"]
+      boldLockedScoreFields();
   
-      // currentPlayer = data["current_player"]
+      currentPlayer = data["current_player"]
       displaySpeculativeScore();
+
+
+      //show/hide roll and voice recognition buttons
+      if (userPosition == currentPlayer) 
+      {
+        rollButton.style.display = "block";
+        recordingButton.style.display = "block";
+      }
+      else
+      {
+        rollButton.style.display = "none";
+        recordingButton.style.display = "none";
+        // TODO maybe instead of hiding disable them and make gray?
+      }
+      
+      if (data["end_of_game"]){
+        console.log("end of game")
+        endGame();
+      }
   
     }
 

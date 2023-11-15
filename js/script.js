@@ -33,6 +33,8 @@ function uuidv4(){
   );
 }
 
+
+
 function checkCookie(name) {
   return document.cookie.split(';').some(cookie => {
       return cookie.trim().startsWith(name + '=');
@@ -77,12 +79,24 @@ function createTable(){
       },
       body: JSON.stringify(requestData), 
     })
-      .then(response => response.json()) // Parse the response as JSON
+    .then(response => {
+      if (!response.ok) {
+          if (response.status === 403) {
+              return response.json().then(errorData => {
+                  throw new Error(errorData.message);
+              });
+          } else {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+      }
+      return response.json();
+  })
       .then(data => {
           console.log('Response data:', data);
           document.cookie = `table_id=${data["table_id"]}; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
           document.cookie = `user_position=1; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
           window.location.href = "/js/table.html";
+          // window.location.replace("/js/table.html");
 
       })
       .catch(error => {
@@ -94,6 +108,8 @@ function createTable(){
 
 
 function joinTable(tableID){
+
+  if (tableID=="") return;
 
   // Create a URL with the query parameter
   const url = `http://localhost:5000/game/join-table`;
@@ -109,7 +125,7 @@ function joinTable(tableID){
 })
     .then(response => {
         if (!response.ok) {
-            if (response.status === 404) {
+            if (response.status === 403) {
                 return response.json().then(errorData => {
                     throw new Error(errorData.message);
                 });
@@ -134,7 +150,6 @@ function joinTable(tableID){
 }
 
 document.getElementById("create-table-button").onclick = createTable;
-document.getElementById("join-table-button").disabled = true;
 document.getElementById("join-table-button").onclick = function() {
     const tableId = document.getElementById("table-id").value;
     joinTable(tableId);
