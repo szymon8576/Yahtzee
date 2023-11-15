@@ -47,9 +47,9 @@ function getTableState(){
 
 
       diceRolled = data["rolledDices"];
-      updateDiceImages();
-  
       lockedDice = data["lockedDices"];
+      
+      updateDiceImages();
       displaySelectedDices();
   
       scoreFields = data["scoreFields"]

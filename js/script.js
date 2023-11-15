@@ -174,7 +174,7 @@ function validateNumberInput(input) {
     document.getElementById("join-table-button").disabled=true;
   }
   else if (isNaN(input.value)) {
-    errorMessage.textContent = 'Room code cant contain characters other than digits.';
+    errorMessage.textContent = "Room ID should contain only digits";
     document.getElementById("join-table-button").disabled=true;
       
   } else {
