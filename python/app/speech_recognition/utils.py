@@ -1,87 +1,104 @@
-import random
-
 import librosa
 import noisereduce as nr
 import numpy as np
-import tensorflow as tf
 import base64
 import io
 
-mfcc_params = {"n_fft": 768, 'hop_length': 256, "n_mels": 13}  # TODO read it from file
-PAD_SIZE = 512
+mfcc_params = {'n_fft': 512, 'hop_length': 256, "n_mels":  13}
+nr_params = {'stationary': True, 'n_fft': 256, 'freq_mask_smooth_hz': 500, 'n_std_thresh_stationary': 0.8}
 
-def normalize_mfcc_frame(mfcc_frame):
-    assert mfcc_frame.shape[1] == 13
+from pydub import AudioSegment, effects
 
-    mfcc_frame_transposed = mfcc_frame.copy()
+def buffer_to_segment(buffer):
+    assert (np.min(buffer) >= -1.5 and np.max(buffer)<=1.5), [np.min(buffer), np.max(buffer)]
+    pcm_audio = (np.rint(buffer*(2**15-1))).astype(np.int16)
+    return AudioSegment(pcm_audio.tobytes(), frame_rate=8000, sample_width=pcm_audio.dtype.itemsize, channels=1)
 
-    # Compute the mean and variance along the axis=0 (across MFCC coefficients)
-    mean = np.mean(mfcc_frame_transposed, axis=0)
-    variance = np.var(mfcc_frame_transposed, axis=0)
-
-    # Perform mean normalization by subtracting the mean
-    mfcc_frame_normalized = mfcc_frame_transposed - mean
-
-    # Perform variance normalization by dividing by the square root of the variance
-    mfcc_frame_normalized /= np.sqrt(variance)
-
-    return mfcc_frame_normalized
+def segment_to_buffer(segment):
+    return (np.array(segment.get_array_of_samples())/(2**15-1)).astype(np.float32)
 
 
-def prepare_audio_for_mfcc(audio):
-    audio_ = nr.reduce_noise(y=audio, sr=8000)
-    audio_ = librosa.util.normalize(audio_)
-    audio_ = np.concatenate((np.zeros(PAD_SIZE, dtype=audio_.dtype),
-                             audio_,
-                             np.zeros(PAD_SIZE, dtype=audio_.dtype)))
 
-    return audio_
+def prepare_audio_for_mfcc(audio, nr_params):
 
+    assert (np.min(audio) >= -1.5 and np.max(audio)<=1.5), [np.min(audio), np.max(audio)]
 
-def perform_mfcc(audio):
-    mfcc = librosa.feature.mfcc(y=audio, sr=8000, **mfcc_params).T
-    mfcc = normalize_mfcc_frame(mfcc)
+    audio_ = nr.reduce_noise(y=audio, sr=8000, **nr_params)
+    audio_segment = buffer_to_segment(audio_)  # use function here
+    normalized = effects.normalize(audio_segment)
 
-    return mfcc
+    return segment_to_buffer(normalized)
 
 
-def predict_raw_audio(audio, used_model, k=None):
-    audio_ = prepare_audio_for_mfcc(audio)
-    mfcc_ = perform_mfcc(audio_)
-    output = used_model(tf.ragged.constant([mfcc_]))
 
-    # process output - take argmax
-    if k:
-        top_values, top_indices = tf.math.top_k(output, k=k)
 
-        for val, prob in zip(top_indices.numpy()[0], top_values.numpy()[0]):
-            print(f"y = {val} with p={round(prob * 100, 1)}%")
+def perform_mfcc(audio, mfcc_params, normalize=False, pad_to = None):
 
-    # if argmax probability is less than k%, return '-1'
-    if tf.reduce_max(output, axis=1).numpy() > 0.5:
-        return tf.argmax(output, axis=1).numpy()[0]
-    else:
-        return -1
+    if pad_to and len(audio) < pad_to:
+      audio = np.concatenate((audio, np.zeros(pad_to-len(audio))))
+
+    mfcc = librosa.feature.mfcc(y=audio, sr=8000, **mfcc_params)
+    delta_1 = librosa.feature.delta(mfcc, width=3, order=1)
+    delta_2 = librosa.feature.delta(mfcc, width=3, order=2)
+
+    # normalize obtained features
+    # mfcc, delta_1, delta_2 = [normalize_frame(arr) for arr in [mfcc.T, delta_1.T, delta_2.T]]
+    mfcc, delta_1, delta_2 = mfcc.T, delta_1.T, delta_2.T
+
+    return np.hstack([mfcc, delta_1, delta_2])
+
+
+import requests
+
+
+def fetchResult(audioDatas):
+    tf_serving_url = 'http://localhost:8501/v1/models/VoiceDigits:predict'
+
+    prepared_mfccs = [row.tolist() for audioData in audioDatas for row in audioData]
+    segments = np.cumsum([0] + [len(audio) for audio in audioDatas]).tolist()
+
+    try:
+        data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
+        response = requests.post(tf_serving_url, json=data)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+
+            predictions = response.json()["outputs"]
+            # print("outputs", predictions)
+            return predictions
+
+        else:
+            print('Failed to get a valid response from TensorFlow Serving')
+
+    except Exception as e:
+        print(str(e))
+
 
 import soundfile as sf
-def predict_wav(audio_data, used_model, k=None):
 
-    audio_data = nr.reduce_noise(y=audio_data, sr=8000)
 
-    # split the audio into non-silent intervals
-    intervals = librosa.effects.split(audio_data, top_db=40)
+def predict_wav(audio_data):
 
-    # predict label for each interval
-    labels = []
-    for i, (start, end) in enumerate(intervals):
-        # sf.write(f"{i}.wav", (audio_data[start:end]), 8000)
-        prediction_result = predict_raw_audio(audio_data[start:end], k=k, used_model=used_model)
-        labels.append(int(prediction_result))
+    audio_data_nr = nr.reduce_noise(y=audio_data, sr=8000, **nr_params)
+    intervals = librosa.effects.split(audio_data_nr, top_db=30)
+
+    parts = [audio_data[start:end] for start, end in intervals]
+    prepared = [prepare_audio_for_mfcc(audio, nr_params) for audio in parts]
+    mfccs = [perform_mfcc(audio, mfcc_params) for audio in prepared]
+
+    for i, part in enumerate(prepared):
+        sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
+
+
+    outputs = fetchResult(mfccs)
+    labels = [int(np.argmax(pred)) for pred in outputs]
+    labels = [label for label in labels if label != 0]
     return labels
 
 
-def base64_to_floats(audio_data):
 
+def base64_to_floats(audio_data):
     audio_data = "data:audio/wav;base64," + audio_data
     base64_audio = audio_data.split(",")[1]
     audio_bytes = base64.b64decode(base64_audio)
