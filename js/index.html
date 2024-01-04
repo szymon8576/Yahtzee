@@ -30,20 +30,31 @@
         <span style="--index: 1;">YAHTZEE</span>
         <span style="--index: 2;">YAHTZEE</span>
       </div>
-    <h2 class="subtitle"> The Best Dice Game for You and Your Friends</h2>
     <p class="subtitle" id="last-room-info"> </p>
 </div>
 
 <div class="game-tables-btn">
-    <h2>To start a game create new table:</h2>
+    <div class="option-div">
+    <h2>Start game with a friend:</h2>
     <button id="create-table-button" class="table-btn">Create new table</button>
+    </div>
+    <div class="vertical-separator"></div>
+    <div class="option-div">
+        <h2>Your friend created a table? Write its ID:</h2>
+        <div class="id-row">
+          <div class="id-container">
+        <input id="table-id" oninput="validateNumberInput(this)" placeholder="Table ID"></input>
+        <h4 id="errorMessage"></h4>
+        </div>
+        <button id="join-table-button" class="table-btn">Join this table</button>
+        </div>
+    </div>
+    <div class="vertical-separator"></div>
+    <div class="option-div">
+    <h2>No friends? No problem!</h2>
     <button id="bot-button" class="table-btn">Play with BOT</button>
     <h1 id="assigned-room-id"></h1>
-
-    <h2>Your friend already created a table? Write its ID:</h2>
-    <input id="table-id" oninput="validateNumberInput(this)" placeholder="Table ID"></input>
-    <h4 id="errorMessage"></h4>
-    <button id="join-table-button" class="table-btn">Join this table</button>
+    </div>
 </div>
 </div>
 <script src="script.js"></script>
