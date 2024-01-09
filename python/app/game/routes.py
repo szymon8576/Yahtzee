@@ -56,6 +56,10 @@ def join_gameroom():
         return jsonify(message), 403
 
 
+@game_bp.route('/health-check', methods=["GET"])
+def health_check():
+    return "OK", 200
+
 @socketio.on('connect')
 def handle_connect():
     user_uuid, room_id = request.args.get('user_uuid'), int(request.args.get('room_id'))
