@@ -1,0 +1,1 @@
+TFSERVING_URL = "https://tfs-webapp.azurewebsites.net"

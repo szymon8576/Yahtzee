@@ -3,20 +3,21 @@ import noisereduce as nr
 import numpy as np
 import base64
 import io
+from flask import current_app
+from pydub import AudioSegment, effects
 
 mfcc_params = {'n_fft': 512, 'hop_length': 256, "n_mels":  13}
 nr_params = {'stationary': True, 'n_fft': 256, 'freq_mask_smooth_hz': 500, 'n_std_thresh_stationary': 0.8}
 
-from pydub import AudioSegment, effects
 
 def buffer_to_segment(buffer):
     assert (np.min(buffer) >= -1.5 and np.max(buffer)<=1.5), [np.min(buffer), np.max(buffer)]
     pcm_audio = (np.rint(buffer*(2**15-1))).astype(np.int16)
     return AudioSegment(pcm_audio.tobytes(), frame_rate=8000, sample_width=pcm_audio.dtype.itemsize, channels=1)
 
+
 def segment_to_buffer(segment):
     return (np.array(segment.get_array_of_samples())/(2**15-1)).astype(np.float32)
-
 
 
 def prepare_audio_for_mfcc(audio, nr_params):
@@ -52,14 +53,12 @@ import requests
 
 
 def fetchResult(audioDatas):
-    tf_serving_url = 'http://localhost:8501/v1/models/VoiceDigits:predict'
-
     prepared_mfccs = [row.tolist() for audioData in audioDatas for row in audioData]
     segments = np.cumsum([0] + [len(audio) for audio in audioDatas]).tolist()
 
     try:
         data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
-        response = requests.post(tf_serving_url, json=data)
+        response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/VoiceDigits:predict', json=data)
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
