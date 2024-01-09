@@ -1,15 +1,35 @@
+function spinUpBackend(backendURL){
+  fetch(backendURL)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Health Check Response:', data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+
 let backendURL
 async function loadConfig() {
     try {
       const response = await fetch('./config.json');
       const config = await response.json();
       backendURL = config.backendURL;
+      spinUpBackend(backendURL);
     } catch (error) {
       console.error('Error loading configuration:', error);
     }
   }
 
 loadConfig();
+
+
 
 //modal window
 // Get the modal
@@ -113,7 +133,7 @@ function createTable(bot = false) {
       setCookie("user_position", "1");
       if (bot) setCookie("game_mode", "bot");
       else setCookie("game_mode", "multiplayer");
-      window.location.href = "/js/table.html";
+      window.location.href = "table.html";
       // window.location.replace("/js/table.html");
     })
     .catch((error) => {
@@ -161,7 +181,7 @@ function joinTable(tableID) {
       setCookie("table_id", tableID);
       setCookie("user_position", "2");
       setCookie("game_mode", "multiplayer");
-      window.location.href = "/js/table.html";
+      window.location.href = "table.html";
     })
     .catch((error) => {
       console.error("Error:", error);
