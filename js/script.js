@@ -12,7 +12,7 @@ function spinUpBackend(backendURL){
       console.log('Health Check Response:', data);
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.log('Error:', error);
     });
 }
 
