@@ -1,3 +1,5 @@
+let backendURL = "https://yahtzee-backend.onrender.com"
+
 //modal window
 // Get the modal
 var modal = document.getElementById("myModal");
@@ -70,7 +72,7 @@ function createTable(bot = false) {
   console.log("creating table, bot=", bot);
 
   // Create a URL with the query parameter
-  const url = `http://localhost:5000/game/create-table`;
+  const url = `${backendURL}/game/create-table`;
   const requestData = { user_uuid: getCookieValue("uuid"), bot: bot };
 
   // Make a POST request using the fetch API
@@ -120,7 +122,7 @@ function joinTable(tableID) {
   if (tableID == "") return;
 
   // Create a URL with the query parameter
-  const url = `http://localhost:5000/game/join-table`;
+  const url = `${backendURL}/game/join-table`;
   const requestData = { user_uuid: getCookieValue("uuid"), table_id: tableID };
 
   // Make a POST request using the fetch API

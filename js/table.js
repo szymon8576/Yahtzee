@@ -1,3 +1,5 @@
+let backendURL = "https://yahtzee-backend.onrender.com"
+
 const userPosition = parseInt(getCookieValue("user_position"), 10);
 const gameMode = getCookieValue("game_mode");
 
@@ -21,7 +23,7 @@ function recognizeAudio(audioBlob){
     let formData = new FormData();
     formData.append("audio_data", audioBlob, "audio_data");
 
-    fetch('http://localhost:5000/speech-recognition/recognize', { method: 'POST', body: formData })
+    fetch(`${backendURL}/speech-recognition/recognize`, { method: 'POST', body: formData })
     .then(response => {
       if (response.ok) {
         return response.json();
