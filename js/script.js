@@ -21,7 +21,7 @@ async function loadConfig() {
       const response = await fetch('./config.json');
       const config = await response.json();
       backendURL = config.backendURL;
-      spinUpBackend(backendURL);
+      spinUpBackend(`${backendURL}/game/health-check`);
     } catch (error) {
       console.error('Error loading configuration:', error);
     }
