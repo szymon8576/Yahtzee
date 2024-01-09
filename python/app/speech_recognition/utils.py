@@ -79,9 +79,9 @@ import soundfile as sf
 
 def predict_wav(audio_data):
 
-    # audio_data_nr = nr.reduce_noise(y=audio_data, sr=8000, **nr_params)
-    # intervals = librosa.effects.split(audio_data_nr, top_db=30)
-    # print("intervals", intervals)
+    audio_data_nr = nr.reduce_noise(y=audio_data, sr=8000, **nr_params)
+    intervals = librosa.effects.split(audio_data_nr, top_db=30)
+    print("intervals", intervals)
 
     parts = [audio_data[start:end] for start, end in intervals]
     prepared = [prepare_audio_for_mfcc(audio, nr_params) for audio in parts]
@@ -90,7 +90,7 @@ def predict_wav(audio_data):
     # for i, part in enumerate(prepared):
     #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
-
+    return []
     outputs = fetchResult(mfccs)
     print("outputs", outputs)
     labels = [int(np.argmax(pred)) for pred in outputs]
