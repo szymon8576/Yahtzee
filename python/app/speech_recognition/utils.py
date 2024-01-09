@@ -81,16 +81,18 @@ def predict_wav(audio_data):
 
     audio_data_nr = nr.reduce_noise(y=audio_data, sr=8000, **nr_params)
     intervals = librosa.effects.split(audio_data_nr, top_db=30)
+    print("intervals", intervals)
 
     parts = [audio_data[start:end] for start, end in intervals]
     prepared = [prepare_audio_for_mfcc(audio, nr_params) for audio in parts]
     mfccs = [perform_mfcc(audio, mfcc_params) for audio in prepared]
-
+    print("mfccs", mfccs)
     # for i, part in enumerate(prepared):
     #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
 
     outputs = fetchResult(mfccs)
+    print("outputs", outputs)
     labels = [int(np.argmax(pred)) for pred in outputs]
     labels = [label for label in labels if label != 0]
     return labels
