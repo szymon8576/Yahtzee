@@ -7,3 +7,4 @@ soundfile==0.12.1
 flask-cors
 gunicorn
 gevent-websocket
+pydub
