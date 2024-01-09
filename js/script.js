@@ -4,7 +4,7 @@ function spinUpBackend(backendURL){
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      return response.json();
+      return response.text();
     })
     .then(data => {
       console.log('Health Check Response:', data);
