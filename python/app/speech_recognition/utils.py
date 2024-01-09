@@ -61,20 +61,23 @@ def fetchResult(audioDatas):
 
     try:
         data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
-        response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data)
+        response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data, timeout=20)
+        response.raise_for_status()
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
 
             predictions = response.json()["outputs"]
-            # print("outputs", predictions)
+            print("predictions", predictions)
             return predictions
 
         else:
             print('Failed to get a valid response from TensorFlow Serving')
 
-    except Exception as e:
-        print(str(e))
+    except requests.exceptions.RequestException as err:
+        print(f"Request failed: {err}")
+    # except Exception as e:
+    #     print(str(e))
 
 
 import soundfile as sf
