@@ -1,4 +1,15 @@
-let backendURL = "https://yahtzee-backend.onrender.com"
+let backendURL
+async function loadConfig() {
+    try {
+      const response = await fetch('./config.json');
+      const config = await response.json();
+      backendURL = config.backendURL;
+    } catch (error) {
+      console.error('Error loading configuration:', error);
+    }
+  }
+
+loadConfig();
 
 const userPosition = parseInt(getCookieValue("user_position"), 10);
 const gameMode = getCookieValue("game_mode");
