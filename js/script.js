@@ -1,5 +1,7 @@
+let backendURL = "https://yahtzee-backend.onrender.com"
+
 function spinUpBackend(backendURL){
-  fetch(backendURL)
+  fetch(`${backendURL}/game/health-check`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -14,21 +16,7 @@ function spinUpBackend(backendURL){
     });
 }
 
-
-let backendURL
-async function loadConfig() {
-    try {
-      const response = await fetch('./config.json');
-      const config = await response.json();
-      backendURL = config.backendURL;
-      spinUpBackend(`${backendURL}/game/health-check`);
-    } catch (error) {
-      console.error('Error loading configuration:', error);
-    }
-  }
-
-loadConfig();
-
+spinUpBackend(backendURL);
 
 
 //modal window

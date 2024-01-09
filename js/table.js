@@ -1,15 +1,4 @@
-let backendURL
-async function loadConfig() {
-    try {
-      const response = await fetch('./config.json');
-      const config = await response.json();
-      backendURL = config.backendURL;
-    } catch (error) {
-      console.error('Error loading configuration:', error);
-    }
-  }
-
-loadConfig();
+let backendURL = "https://yahtzee-backend.onrender.com"
 
 const userPosition = parseInt(getCookieValue("user_position"), 10);
 const gameMode = getCookieValue("game_mode");
@@ -144,8 +133,9 @@ socket.on('reconnect_failed', (data) => { isSocketConnected  = false; socketEven
 
 const socketEvent = (data) => { 
     if(!isSocketConnected){
+      console.log(data);
       alert(`Couldn't connect with game table (${data})`)
-      window.location.href = "/js";
+      // window.location.href = "/js";
     }
 }
 
