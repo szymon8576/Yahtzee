@@ -7,7 +7,7 @@ from datetime import datetime
 
 class GameRoomAccumulator:
 
-    def __init__(self, n_rooms=20):
+    def __init__(self, n_rooms=100):
         self.rooms = [GameRoom(room_id=room_id) for room_id in range(n_rooms)]
         self.players = PlayersAccumulator()
 

@@ -87,8 +87,8 @@ def predict_wav(audio_data):
     prepared = [prepare_audio_for_mfcc(audio, nr_params) for audio in parts]
     mfccs = [perform_mfcc(audio, mfcc_params) for audio in prepared]
 
-    for i, part in enumerate(prepared):
-        sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
+    # for i, part in enumerate(prepared):
+    #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
 
     outputs = fetchResult(mfccs)
