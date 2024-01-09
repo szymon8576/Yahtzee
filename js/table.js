@@ -109,7 +109,7 @@ function stopRecording() {
 
 
   console.log("creating socket");
-  const socket = io(`${backendURL}/game`, {
+  const socket = io(`${backendURL}`, {
     query: {
         user_uuid: getCookieValue("uuid"),
         room_id: getCookieValue("table_id"),
