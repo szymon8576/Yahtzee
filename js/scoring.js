@@ -6,7 +6,7 @@ let roundNumber = 1; //everyone has 13 rounds do 26 in total
 let diceRolled = []; //all dice in play array
 let currentDiceIndex; //dice selection/deselection
 let lockedDice = [false, false, false, false, false]; //selected dices array
-let currentPlayer = 1; //TODO
+let currentPlayer = null; //TODO
 let scoreFields = { 1: {}, 2: {} };
 
 //DOM Elements
@@ -61,6 +61,8 @@ for (let i = 0; i < categories_names.length; i++) {
   const categoryCell = row.insertCell(0);
   categoryCell.textContent = categories_names[i];
   categoryCell.className = "first-column";
+
+  if(i==categories_names.length-1) categoryCell.id = "first-column-total";
 
   for (let j = 1; j <= 2; j++) {
     const cell = row.insertCell(j);
@@ -244,45 +246,45 @@ function changePlayer() {
 }
 
 //display total upper table sum
-function calculateAndDisplaySum(currentPlayer) {
+function calculateAndDisplaySum(playerNum) {
   const sumCategories = ["ones", "twos", "threes", "fours", "fives", "sixes"];
   let totalSum = 0;
 
   for (const category of sumCategories) {
-    const categoryScores = scoreFields[currentPlayer];
+    const categoryScores = scoreFields[playerNum];
 
     // Check if the category has a score, and it's not locked
-    if (categoryScores[`${category}-${currentPlayer}`] !== undefined) {
-      totalSum += categoryScores[`${category}-${currentPlayer}`];
+    if (categoryScores[`${category}-${playerNum}`] !== undefined) {
+      totalSum += categoryScores[`${category}-${playerNum}`];
     }
   }
 
   // Display the total sum in a designated cell
-  document.getElementById(`uppertabletotal-${currentPlayer}`).textContent =
+  document.getElementById(`uppertabletotal-${playerNum}`).textContent =
     totalSum;
 
   // Calculate and display bonus
   const bonus = totalSum >= 63 ? 35 : 0;
 
-  const bonusCell = document.getElementById(`bonus-${currentPlayer}`);
+  const bonusCell = document.getElementById(`bonus-${playerNum}`);
 
   bonusCell.textContent = bonus;
-  console.log(`bonus-${currentPlayer}`, bonus);
+  console.log(`bonus-${playerNum}`, bonus);
 
   if (bonus !== 0) {
     bonusCell.classList.add("bonusBold");
-    console.log(`bonusBold added to bonus-${currentPlayer}`);
+    console.log(`bonusBold added to bonus-${playerNum}`);
   } else {
     bonusCell.classList.remove("bonusBold");
-    console.log(`bonusBold removed from bonus-${currentPlayer}`);
+    console.log(`bonusBold removed from bonus-${playerNum}`);
   }
 
   // Display Total Sum
-  const totalCell = document.getElementById(`total-${currentPlayer}`);
+  const totalCell = document.getElementById(`total-${playerNum}`);
   let totalGame = 0;
 
-  for (const category in scoreFields[currentPlayer]) {
-    totalGame += scoreFields[currentPlayer][category];
+  for (const category in scoreFields[playerNum]) {
+    totalGame += scoreFields[playerNum][category];
   }
 
   // Add bonus only if the condition is met
@@ -291,7 +293,7 @@ function calculateAndDisplaySum(currentPlayer) {
   }
 
   totalCell.textContent = totalGame;
-  console.log(`Total Game ${currentPlayer}:`, totalGame);
+  console.log(`Total Game ${playerNum}:`, totalGame);
 }
 calculateAndDisplaySum(1);
 calculateAndDisplaySum(2);

@@ -64,12 +64,7 @@ function startRecording() {
         console.error('Error accessing microphone:', error);
       });
       
-      
-      recordingButton.textContent = "Stop Recording";
-      recordingButton.insertAdjacentHTML(
-        "beforeend",
-        `<i class="fas fa-microphone-slash" style='font-size:30px; padding:5px 2px; color:red'></i>`
-      );
+      recordingButton.classList.toggle("pressed");
 
       isRecording = true;
 
@@ -87,11 +82,9 @@ function stopRecording() {
 
       });
 
-    recordingButton.textContent = "Start Recording ";
-    recordingButton.insertAdjacentHTML(
-      "beforeend",
-      `<i class="fas fa-microphone" style='font-size:30px; padding:5px 8px; color:green'></i>`
-    );
+    recordingButton.classList.toggle("pressed");
+
+
     isRecording = false;
     }
  
@@ -144,6 +137,6 @@ const socketEvent = (data) => {
 }
 
 
-if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend:${getCookieValue("table_id")}`
+if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend: ${getCookieValue("table_id")}`
 
 

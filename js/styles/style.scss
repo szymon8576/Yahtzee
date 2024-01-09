@@ -1,7 +1,7 @@
 $color_1: #aaaaaa;
 $black: #000;
 $color_4: rgb(248, 246, 246);
-$font-family: "Roboto", sans-serif;
+$font-family: "Jost", sans-serif;
 $background-color_1: rgb(135, 189, 224);
 $background-color_2: rgb(0, 0, 0);
 $background-color_3: rgba(0, 0, 0, 0.4);
@@ -43,10 +43,22 @@ $background-color_5: rgb(8, 8, 133);
     transform: none;
   }
 }
+
+html{
+  background: #00B4DB;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  height: 100%;
+}
+
 body {
-  margin: 20px;
+  // margin: 20px;
+  margin:0;
   padding: 0;
-  background-color: $background-color_1;
+  // height: 100%;
+  // background-color: $background-color_1;
+
   font-family: $font-family;
   border-radius: 10%;
 }
@@ -57,6 +69,7 @@ body {
 #icon {
   width: 40px;
   cursor: pointer;
+  padding: 5px;
 }
 .modal {
   display: none;
@@ -95,10 +108,11 @@ body {
   }
 }
 .game-name {
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-left: 30%;
 }
 .title {
   font-family: $font-family;
@@ -241,3 +255,33 @@ body {
     margin: 10px 0;
   }
 }
+
+
+
+#recordingButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: #d42323;
+  border-radius: 50%;
+  border:none;
+  cursor: pointer;
+  box-shadow: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  transition: background-color 0.5s ease; 
+}
+
+#recordingButton i {
+  color: #fff;
+  font-size: 12px;
+}
+
+#recordingButton.pressed {
+  background-color: #700f0f;
+  transform: scale(0.95);
+}
+

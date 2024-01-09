@@ -1,31 +1,48 @@
 $table-bg-color: #9ec0c4; // Background color for table header
 $table-bg-score: #f2f2f2;
-$font-family: "Roboto", sans-serif;
+$font-family: "Jost", sans-serif;
 
 table {
   border-collapse: collapse;
   margin: 40px 0px;
-  width: 100%;
+  width: 80%;
   font-size: 14px;
-  font-family: $font-family;
-
-  th,
-  td {
-    border: 1px solid black;
-    padding: 6px;
-    text-align: left;
-    cursor: pointer;
-  }
-  td {
-    background-color: $table-bg-score;
-  }
-  th {
-    background-color: $table-bg-color;
-    text-align: center;
-  }
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-left: 80px;
 }
+
+table th,
+table td {
+  /* border: 1px solid black; */
+  /* padding: 6px; */
+  padding: 6px 12px;
+  text-align: center;
+  cursor: pointer;
+
+}
+
+table td {
+  background-color: #f2f2f2;
+  border: 1px solid #000000;
+
+}
+
+#first-column-total,
+#total-1,
+#total-2,
+table th {
+
+  text-align: center;
+  background-color: #005e7e;
+  color: #ffffff;
+  font-size: 12px;
+  border: none;
+}
+
 .first-column {
-  background-color: $table-bg-color;
+  background-color: #c0e2ee;
 }
 
 .table-bold {
@@ -33,23 +50,34 @@ table {
   text-transform: uppercase;
 }
 
-#total-1,
-#total-2,
+
 #uppertabletotal-1,
 #uppertabletotal-2,
 #bonus-1,
 #bonus-2 {
-  background-color: $table-bg-color;
+  background-color: #c0e2ee;
 }
+
+#first-column-total{
+  font-weight: bold;
+}
+
 .game-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
   margin-top: 2em;
   width: 100%;
 }
+
 .scoresheet {
   width: 30%;
 }
+
 .dice-section {
   display: flex;
   flex-direction: column;
@@ -58,7 +86,16 @@ table {
 }
 
 .dice-display {
+
   opacity: 1;
+  position: relative;
+  background-color: rgba(36, 26, 0, 0.262);
+  padding: 10px 100px 10px 100px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  margin-top: 40px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
   div {
     width: 100px;
     height: 100px;
@@ -145,13 +182,15 @@ table {
   pointer-events: none;
 }
 
-#uppertabletotal-1,
-#uppertabletotal-2,
-.bonusBold,
-#total-1,
-#total-2 {
+.bonusBold{
   color: rgb(28, 14, 14);
   font-weight: 700;
+}
+
+#total-1,
+#total-2{
+  color: "white";
+  font-weight: bold;
 }
 
 //modal with the winner

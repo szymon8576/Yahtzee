@@ -1,16 +1,7 @@
 
 function getTableState(){
-    data = {"scores": {}, "selectedDices": []}
-  
-    for (let i = 0; i < functionNames.length; i++) {
-        
-        let cellId = `${functionNames[i].name.toLowerCase()}-${currentPlayer}`;
-        let cellContent = document.getElementById(cellId).textContent;  
-  
-        data["scores"][cellId]  = cellContent;
-  
-    }
-    
+
+    data = {}
     data["lockedDices"] = lockedDice; //indexes of selected dices
     data["rolledDices"] = diceRolled;
     data["scoreFields"] = scoreFields;
@@ -27,7 +18,7 @@ for (var i = 0; i < categories_ids.length ; i++) {
 
   cellId = `${categories_ids[i].replaceAll(" ", "").toLowerCase()}-2`;
   player2_cellIds.push([cellId, functionNames[i]] );
-  
+
 }
 
 function randomResponseTime(){
@@ -163,7 +154,7 @@ function calculateCumulativeSum(array) {
       if (userPosition == currentPlayer) 
       {
         rollButton.style.display = "block";
-        recordingButton.style.display = "block";
+        recordingButton.style.display = "flex";
       }
       else
       {
