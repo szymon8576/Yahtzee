@@ -61,7 +61,7 @@ def fetchResult(audioDatas):
 
     try:
         data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
-        response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data, timeout=20)
+        response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data)
         response.raise_for_status()
 
         # Check if the request was successful (status code 200)
