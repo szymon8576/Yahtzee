@@ -58,7 +58,6 @@ def fetchResult(audioDatas):
 
     try:
         data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
-        print(data, current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict')
         response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data)
 
         # Check if the request was successful (status code 200)
@@ -77,24 +76,20 @@ def fetchResult(audioDatas):
 
 import soundfile as sf
 
-
 def predict_wav(audio_data):
 
     audio_data_nr = nr.reduce_noise(y=audio_data, sr=8000, **nr_params)
     intervals = librosa.effects.split(audio_data_nr, top_db=30)
-    print("intervals", intervals)
 
     parts = [audio_data[start:end] for start, end in intervals]
     prepared = [prepare_audio_for_mfcc(audio, nr_params) for audio in parts]
     mfccs = [perform_mfcc(audio, mfcc_params) for audio in prepared]
-    print("mfccs", mfccs)
+
     # for i, part in enumerate(prepared):
     #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
 
     outputs = fetchResult(mfccs)
-    print("outputs", outputs)
-    return []
     labels = [int(np.argmax(pred)) for pred in outputs]
     labels = [label for label in labels if label != 0]
     return labels
