@@ -58,6 +58,7 @@ def fetchResult(audioDatas):
 
     try:
         data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
+        print(data, current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict')
         response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data)
 
         # Check if the request was successful (status code 200)
@@ -90,9 +91,10 @@ def predict_wav(audio_data):
     # for i, part in enumerate(prepared):
     #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
-    return []
+
     outputs = fetchResult(mfccs)
     print("outputs", outputs)
+    return []
     labels = [int(np.argmax(pred)) for pred in outputs]
     labels = [label for label in labels if label != 0]
     return labels
