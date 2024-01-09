@@ -1,11 +1,10 @@
 flask
 flask-socketio
 librosa
-noisereduce
+noisereduce==2.0.1
 numpy
 soundfile
 flask-cors
 gunicorn
 eventlet
 pydub
-torch
