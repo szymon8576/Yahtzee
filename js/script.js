@@ -58,16 +58,35 @@ function uuidv4() {
 }
 
 document.getElementById("spinning-wheel-main-page").style.display = 'none';
-
+document.querySelector('.countdown').style.display='none';
+let first_query = true;
 
 function showWheel(){
     
-  document.getElementById("spinning-wheel-main-page").style.display = 'block';
+    document.getElementById("spinning-wheel-main-page").style.display = 'block';
+
+    if(first_query){
+
+        const countdownElement = document.querySelector('.countdown');
+        countdownElement.style.display='block';
+        countdownElement.textContent = 30;
+
+        const countdownInterval = setInterval(() => {
+            countdownElement.textContent--;
+    
+            if (countdownElement.textContent <= 0) {
+                countdownElement.textContent = 0;
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+
+      first_query = false;
+    }
 }
 
 function hideWheel(){
-    
-  document.getElementById("spinning-wheel-main-page").style.display = 'none';
+    document.getElementById("spinning-wheel-main-page").style.display =  'none';
+    document.querySelector('.countdown').style.display= "none";
 }
 
 function checkCookie(name) {
