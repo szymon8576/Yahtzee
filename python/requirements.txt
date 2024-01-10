@@ -3,7 +3,6 @@ flask-socketio
 librosa
 noisereduce==2.0.1
 numpy
-soundfile
 flask-cors
 gunicorn
 dnspython==1.16.0

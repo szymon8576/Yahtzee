@@ -13,6 +13,7 @@ def recognize():
 
     if len(audio)>0:
         recognized_digits = predict_wav(audio)
+        print(recognized_digits)
         return jsonify(recognized_digits)
     else:
         return []

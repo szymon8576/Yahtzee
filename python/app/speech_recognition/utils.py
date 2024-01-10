@@ -5,6 +5,8 @@ import base64
 import io
 from flask import current_app
 from pydub import AudioSegment, effects
+import requests
+
 
 mfcc_params = {'n_fft': 512, 'hop_length': 256, "n_mels":  13}
 nr_params = {'stationary': True, 'n_fft': 256, 'freq_mask_smooth_hz': 500, 'n_std_thresh_stationary': 0.8}
@@ -31,8 +33,6 @@ def prepare_audio_for_mfcc(audio, nr_params):
     return segment_to_buffer(normalized)
 
 
-
-
 def perform_mfcc(audio, mfcc_params, normalize=False, pad_to = None):
 
     if pad_to and len(audio) < pad_to:
@@ -48,8 +48,6 @@ def perform_mfcc(audio, mfcc_params, normalize=False, pad_to = None):
 
     return np.hstack([mfcc, delta_1, delta_2])
 
-import requests
-
 
 def fetchResult(audioDatas):
     prepared_mfccs = [row.tolist() for audioData in audioDatas for row in audioData]
@@ -58,25 +56,18 @@ def fetchResult(audioDatas):
     try:
         data = {"inputs": {"args_0": prepared_mfccs, "args_0_1": segments}}
         response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data)
-        response.raise_for_status()
 
-        # Check if the request was successful (status code 200)
         if response.status_code == 200:
 
             predictions = response.json()["outputs"]
-            print("predictions", predictions)
             return predictions
 
         else:
             print('Failed to get a valid response from TensorFlow Serving')
 
-    except requests.exceptions.RequestException as err:
-        print(f"Request failed: {err}")
-    # except Exception as e:
-    #     print(str(e))
+    except Exception as e:
+        print(str(e))
 
-
-import soundfile as sf
 
 def predict_wav(audio_data):
 
@@ -90,12 +81,10 @@ def predict_wav(audio_data):
     # for i, part in enumerate(prepared):
     #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
-
     outputs = fetchResult(mfccs)
     labels = [int(np.argmax(pred)) for pred in outputs]
     labels = [label for label in labels if label != 0]
     return labels
-
 
 
 def base64_to_floats(audio_data):
