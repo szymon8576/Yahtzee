@@ -1,4 +1,4 @@
-let backendURL = "https://yahtzee-backend.onrender.com"
+let backendURL = "http://127.0.0.1:5000" //"https://yahtzee-backend.onrender.com"
 
 const userPosition = parseInt(getCookieValue("user_position"), 10);
 const gameMode = getCookieValue("game_mode");
@@ -6,7 +6,7 @@ const gameMode = getCookieValue("game_mode");
 const recordingButton = document.getElementById("recordingButton");
 
 let isRecording = false;
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
 
 recordingButton.addEventListener("click", () => {
   if (!isRecording) {
@@ -54,11 +54,12 @@ function recognizeAudio(audioBlob){
 }
 
 
-// Start audio recording
+let recorder;
+
 function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true, noiseSuppression: false, echoCancellation: false,  })
       .then(function(stream) {
-        audioChunks = [];
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
         recorder = new Recorder(audioContext.createMediaStreamSource(stream));
         recorder.record();
       })
@@ -67,7 +68,6 @@ function startRecording() {
       });
       
       recordingButton.classList.toggle("pressed");
-
       isRecording = true;
 
 

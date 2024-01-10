@@ -58,9 +58,7 @@ def fetchResult(audioDatas):
         response = requests.post(current_app.config['TFSERVING_URL'] + '/v1/models/SpeechDigits:predict', json=data)
 
         if response.status_code == 200:
-
-            predictions = response.json()["outputs"]
-            return predictions
+            return response.json()["outputs"]
 
         else:
             print('Failed to get a valid response from TensorFlow Serving')
@@ -77,9 +75,6 @@ def predict_wav(audio_data):
     parts = [audio_data[start:end] for start, end in intervals]
     prepared = [prepare_audio_for_mfcc(audio, nr_params) for audio in parts]
     mfccs = [perform_mfcc(audio, mfcc_params) for audio in prepared]
-
-    # for i, part in enumerate(prepared):
-    #     sf.write(r"C:\Users\User\debug" + str(i) + ".wav", part, 8000)
 
     outputs = fetchResult(mfccs)
     labels = [int(np.argmax(pred)) for pred in outputs]

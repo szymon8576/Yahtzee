@@ -11,7 +11,7 @@ def recognize():
 
     audio, _ = librosa.load(io.BytesIO(request.files["audio_data"].read()), sr=8000)
 
-    if len(audio)>0:
+    if len(audio) > 0:
         recognized_digits = predict_wav(audio)
         return jsonify(recognized_digits)
     else:
