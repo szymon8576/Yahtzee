@@ -1,7 +1,3 @@
-//throw and round number
-let rollNumber = 1;
-let roundNumber = 1; //everyone has 13 rounds do 26 in total
-
 //dice information
 let diceRolled = []; //all dice in play array
 let currentDiceIndex; //dice selection/deselection
@@ -12,6 +8,10 @@ let scoreFields = { 1: {}, 2: {} };
 //DOM Elements
 const diceArea = document.getElementsByClassName("dice-display");
 const rollButton = document.getElementById("rollDice");
+
+if (sessionStorage.getItem('rollNumber')==null) sessionStorage.setItem('rollNumber', 1);
+else if (parseInt(sessionStorage.getItem('rollNumber'),10)==2) rollButton.classList.add("disabled"); 
+
 
 // Initialize the table and add onclick methods
 const categories_names = [
@@ -123,13 +123,15 @@ function boldLockedScoreFields(){
 //events
 rollButton.addEventListener("click", function () {
 
+  let rollNumber = parseInt(sessionStorage.getItem('rollNumber'), 10);
+
   if (rollNumber < 2) {
-    randomDice(), rollNumber++;
-    console.log("roll number: ", rollNumber);
+    randomDice();
+    sessionStorage.setItem("rollNumber",(rollNumber+1))
   }
   //disable button
   else if (rollNumber == 2) {
-    randomDice(), console.log("roll number: ", rollNumber);
+    randomDice();
     rollButton.classList.add("disabled");
   }
 
@@ -159,12 +161,12 @@ function updateDiceImages() {
   const diceElements = diceContainer.querySelectorAll(".dice");
 
   for (let i = 0; i < diceRolled.length; i++) {
-    if (!lockedDice[i]) {
+    // if (!lockedDice[i]) {
       const diceImg = diceElements[i];
       const diceNumber = diceRolled[i];
       diceImg.src = `/images/dice-${diceNumber}.png`;
       diceImg.alt = `Dice ${diceNumber}`;
-    }
+    // }
   }
 }
 
@@ -234,9 +236,8 @@ function removeSelection() {
 //change Player when score is chosen
 function changePlayer() {
   // Switch to the next player or end the game if needed
-  roundNumber++;
   //currentPlayer = currentPlayer === 1 ? 2 : 1;
-  rollNumber = 1;
+  sessionStorage.setItem('rollNumber', 1);
   removeSelection();
   //lockedDice = [false, false, false, false, false];
   //randomDice();
