@@ -97,11 +97,15 @@ table th {
   margin: 20px;
 }
 .dice-display img:hover {
-  border-color: rgb(3, 18, 160);
+  border-color: rgb(255, 255, 255);
   opacity: 95%;
 }
 .dice-display .selected {
-  border: dotted 3px rgb(3, 18, 160);
+  border: dotted 3px rgb(255, 255, 255);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #mic-option {

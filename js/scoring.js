@@ -6,7 +6,7 @@ let roundNumber = 1; //everyone has 13 rounds do 26 in total
 let diceRolled = []; //all dice in play array
 let currentDiceIndex; //dice selection/deselection
 let lockedDice = [false, false, false, false, false]; //selected dices array
-let currentPlayer = null; //TODO
+let currentPlayer = null;
 let scoreFields = { 1: {}, 2: {} };
 
 //DOM Elements
@@ -169,7 +169,6 @@ function updateDiceImages() {
 }
 
 // lock dices on table and push to selected array
-// TODO turn off dotted dice marking on hover when it is not current player's turn (when userPosition != currentPlayer )
 function toggleLock(index) {
   
   if (userPosition != currentPlayer) return;
@@ -340,6 +339,6 @@ function resetGame(){
   deleteCookie('table_id');
   deleteCookie('user_position');
   
-  window.location.href = "/js";
+  window.location.href = "./";
 }
 

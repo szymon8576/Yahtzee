@@ -157,7 +157,7 @@ const socketEvent = (data) => {
     if(!isSocketConnected){
       console.log(data);
       alert(`Couldn't connect with game table (${data})`)
-      // window.location.href = "/js";
+      window.location.href = "/";
     }
 }
 
