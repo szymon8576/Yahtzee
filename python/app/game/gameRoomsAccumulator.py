@@ -87,6 +87,7 @@ class GameRoomAccumulator:
     def get_vacant_room_id(self):
         for room in self.rooms[::-1]:
             if not room.is_active:
+                room.reset_table()
                 return room.id
         return None
 
