@@ -1,4 +1,4 @@
-let backendURL = "http://127.0.0.1:5000" //"https://yahtzee-backend.onrender.com"
+let backendURL = "https://yahtzee-backend.onrender.com"
 
 const userPosition = parseInt(getCookieValue("user_position"), 10);
 const gameMode = getCookieValue("game_mode");
