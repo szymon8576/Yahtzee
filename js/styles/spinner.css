@@ -9,6 +9,11 @@
     height: 40px; 
 }
 
+#spinning-wheel-main-page{
+    left: 15px;
+    top: 15px;
+}
+
   
   .lds-spinner div {
     transform-origin: 25px 25px;
@@ -27,6 +32,11 @@
     background: #ffffff;
   }
   
+  #spinning-wheel-main-page.lds-spinner div:after{
+    width: 5px;
+    height: 5px;
+  }
+
 
   .lds-spinner div:nth-child(1) {
     transform: rotate(0deg);

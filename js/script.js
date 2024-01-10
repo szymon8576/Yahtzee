@@ -57,6 +57,19 @@ function uuidv4() {
   );
 }
 
+document.getElementById("spinning-wheel-main-page").style.display = 'none';
+
+
+function showWheel(){
+    
+  document.getElementById("spinning-wheel-main-page").style.display = 'block';
+}
+
+function hideWheel(){
+    
+  document.getElementById("spinning-wheel-main-page").style.display = 'none';
+}
+
 function checkCookie(name) {
   return document.cookie.split(";").some((cookie) => {
     return cookie.trim().startsWith(name + "=");
@@ -94,6 +107,8 @@ function createTable(bot = false) {
   const url = `${backendURL}/game/create-table`;
   const requestData = { user_uuid: getCookieValue("uuid"), bot: bot };
 
+  showWheel();
+
   // Make a POST request using the fetch API
   fetch(url, {
     method: "POST",
@@ -103,6 +118,9 @@ function createTable(bot = false) {
     body: JSON.stringify(requestData),
   })
     .then((response) => {
+
+      hideWheel();
+
       if (!response.ok) {
         if (response.status === 403) {
           return response.json().then((errorData) => {
@@ -144,6 +162,8 @@ function joinTable(tableID) {
   const url = `${backendURL}/game/join-table`;
   const requestData = { user_uuid: getCookieValue("uuid"), table_id: tableID };
 
+  showWheel();
+
   // Make a POST request using the fetch API
   fetch(url, {
     method: "POST",
@@ -153,6 +173,7 @@ function joinTable(tableID) {
     body: JSON.stringify(requestData),
   })
     .then((response) => {
+      hideWheel();
       if (!response.ok) {
         if (response.status === 403) {
           return response.json().then((errorData) => {
