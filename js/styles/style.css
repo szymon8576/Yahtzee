@@ -73,6 +73,7 @@ table th {
 }
 
 .dice-display {
+  margin-left: 90px;
   opacity: 1;
   position: relative;
   background-color: rgba(36, 26, 0, 0.262);
@@ -143,6 +144,7 @@ table th {
 }
 
 #rollDice {
+  margin-left: 90px;
   width: 50px;
   height: 50px;
   background-color: rgb(212, 35, 35);
@@ -313,7 +315,15 @@ body {
   cursor: pointer;
 }
 
-.game-name {
+.game-name-index {
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30%;
+}
+
+.game-name-table {
   display: block;
   flex-direction: column;
   align-items: center;
@@ -340,6 +350,7 @@ body {
 .stack {
   display: grid;
   grid-template-columns: 1fr;
+  width: 30%;
 }
 .stack span {
   font-family: "Jost", sans-serif;
