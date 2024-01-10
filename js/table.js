@@ -140,6 +140,7 @@ const socketEvent = (data) => {
 }
 
 
-if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend: ${getCookieValue("table_id")}`
+if(getCookieValue("game_mode")=="bot") document.getElementById("gameStatus").innerText = "Initializing your game... Please wait 🎲"
+else if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend: ${getCookieValue("table_id")}`
 
 
