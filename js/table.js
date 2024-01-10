@@ -76,11 +76,12 @@ function hideWheel(){
 }
 
 
-let recorder;
+let recorder, stream;
 
 function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true, noiseSuppression: false, echoCancellation: false,  })
-      .then(function(stream) {
+      .then(function(stream_) {
+        stream = stream_;
         let audioContext = new (window.AudioContext || window.webkitAudioContext)();
         recorder = new Recorder(audioContext.createMediaStreamSource(stream));
         recorder.record();
@@ -105,6 +106,10 @@ function stopRecording() {
         recognizeAudio(blob);
 
       });
+
+    stream.getTracks().forEach(function(track) { 
+        track.stop(); 
+      }); 
 
     recordingButton.classList.toggle("pressed");
 
