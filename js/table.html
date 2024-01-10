@@ -8,42 +8,43 @@
     <link rel="icon" type="image/x-icon" href="../images/dice-icon.svg">
     <script src="https://kit.fontawesome.com/14b4aab01c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-pzr5eL6t4e77c5Yfxr2Mv86gmvEsLpziQ54/fZDm7gJXkxF69msqy8p68zsMJHKUf4I9wMj5zBJ6vU5RzwvBvw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="stylesheet" href="./styles/spinner.css">
 
 </head>
 <body>
-<h2 class="game-name">
-   Yathzee Table 🎲
-</h2>
-<p class="game-name" id="gameStatus"></p> <!-- TODO Other class here? !-->
-<div class="game-body" style="display:none;">
-<div class="scoresheet">
+  <h2 class="game-name">
+    Yathzee Table 🎲
+  </h2>
+  <p class="game-name" id="gameStatus"></p>
+  <div class="game-body" style="display:none;">
+    <div class="scoresheet">
 
 <table id="score-table">
     <tr>
         <th></th>
         <th>Player 1</th>
         <th>Player 2</th>
-    </tr>
+      </tr>
 </table>
 
 
 </div>
 <div class="dice-section">
-    <div class="dice-display"> 
-       <img src="/images/dice-1.png" alt="" class="dice" id='dice-1' onclick="toggleLock(0)">
+  <div class="dice-display"> 
+    <img src="/images/dice-1.png" alt="" class="dice" id='dice-1' onclick="toggleLock(0)">
         <img src="/images/dice-2.png" alt="" class="dice" id='dice-2' onclick="toggleLock(1)">
         <img src="/images/dice-1.png" alt="" class="dice" id='dice-3' onclick="toggleLock(2)">
           <img src="/images/dice-4.png" alt="" class="dice" id='dice-4' onclick="toggleLock(3)">
        <img src="/images/dice-5.png" alt="" class="dice" id='dice-5' onclick="toggleLock(4)">
        <div id="recordingButton">
-        <i class="fas fa-microphone"></i>
+         <i class="fas fa-microphone"></i>
+        </div>
       </div>
+    <div style="position:relative">
+      <div class="lds-spinner" id="spinning-wheel"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <button id="rollDice" class="btn"> <i class="fa-solid fa-rotate-left"></i></button>
     </div>
-
-    <button id="rollDice" class="btn"> <i class="fa-solid fa-rotate-left"></i></button>
-    
-</div>
+  </div>
 </div>
 </div>
 <div id="resultModal" class="modal">

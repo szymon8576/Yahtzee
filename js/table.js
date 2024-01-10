@@ -23,6 +23,8 @@ function recognizeAudio(audioBlob){
     let formData = new FormData();
     formData.append("audio_data", audioBlob, "audio_data");
 
+    showWheel();
+
     fetch(`${backendURL}/speech-recognition/recognize`, { method: 'POST', body: formData})
     .then(response => {
       if (response.ok) {
@@ -32,7 +34,10 @@ function recognizeAudio(audioBlob){
       }
     })
     .then(data => {
+
       console.log('Response from server:', data);
+
+      hideWheel();
 
       data.forEach((value) => {
         //get index of (first) dice with given value
@@ -51,6 +56,23 @@ function recognizeAudio(audioBlob){
       console.error('Error:', error);
     });
 
+    
+
+}
+
+
+
+document.getElementById("spinning-wheel").style.display = 'none';
+
+
+function showWheel(){
+    
+  document.getElementById("spinning-wheel").style.display = 'block';
+}
+
+function hideWheel(){
+    
+  document.getElementById("spinning-wheel").style.display = 'none';
 }
 
 
@@ -140,7 +162,7 @@ const socketEvent = (data) => {
 }
 
 
-if(getCookieValue("game_mode")=="bot") document.getElementById("gameStatus").innerText = "Initializing your game... Please wait 🎲"
+if(getCookieValue("game_mode")=="bot") document.getElementById("gameStatus").innerText = "Initializing your game..."
 else if(userPosition==1) document.getElementById("gameStatus").innerText = `Waiting for opponent, share this code with your friend: ${getCookieValue("table_id")}`
 
 
