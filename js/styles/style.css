@@ -1,27 +1,41 @@
 table {
   border-collapse: collapse;
   margin: 40px 0px;
-  width: 100%;
+  width: 80%;
   font-size: 14px;
-  font-family: "Roboto", sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-left: 80px;
 }
+
 table th,
 table td {
-  border: 1px solid black;
-  padding: 6px;
-  text-align: left;
+  /* border: 1px solid black; */
+  /* padding: 6px; */
+  padding: 6px 12px;
+  text-align: center;
   cursor: pointer;
 }
+
 table td {
   background-color: #f2f2f2;
+  border: 1px solid #000000;
 }
+
+#first-column-total,
+#total-1,
+#total-2,
 table th {
-  background-color: #9ec0c4;
   text-align: center;
+  background-color: #005e7e;
+  color: #ffffff;
+  font-size: 12px;
+  border: none;
 }
 
 .first-column {
-  background-color: #9ec0c4;
+  background-color: #c0e2ee;
 }
 
 .table-bold {
@@ -29,13 +43,15 @@ table th {
   text-transform: uppercase;
 }
 
-#total-1,
-#total-2,
 #uppertabletotal-1,
 #uppertabletotal-2,
 #bonus-1,
 #bonus-2 {
-  background-color: #9ec0c4;
+  background-color: #c0e2ee;
+}
+
+#first-column-total {
+  font-weight: bold;
 }
 
 .game-body {
@@ -58,6 +74,13 @@ table th {
 
 .dice-display {
   opacity: 1;
+  position: relative;
+  background-color: rgba(36, 26, 0, 0.262);
+  padding: 10px 100px 10px 100px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  margin-top: 40px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 .dice-display div {
   width: 100px;
@@ -147,13 +170,15 @@ table th {
   pointer-events: none;
 }
 
-#uppertabletotal-1,
-#uppertabletotal-2,
-.bonusBold,
-#total-1,
-#total-2 {
+.bonusBold {
   color: rgb(28, 14, 14);
   font-weight: 700;
+}
+
+#total-1,
+#total-2 {
+  color: "white";
+  font-weight: bold;
 }
 
 /* Style the modal */
@@ -219,11 +244,16 @@ table th {
     transform: none;
   }
 }
+html {
+  background: #00B4DB; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 100%;
+}
+
 body {
-  margin: 20px;
+  margin: 0;
   padding: 0;
-  background-color: rgb(135, 189, 224);
-  font-family: "Roboto", sans-serif;
+  font-family: "Jost", sans-serif;
   border-radius: 10%;
 }
 
@@ -235,6 +265,7 @@ body {
 #icon {
   width: 40px;
   cursor: pointer;
+  padding: 5px;
 }
 
 .modal {
@@ -277,14 +308,15 @@ body {
 }
 
 .game-name {
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-left: 30%;
 }
 
 .title {
-  font-family: "Roboto", sans-serif;
+  font-family: "Jost", sans-serif;
   font-size: 10rem;
   color: #000;
   text-transform: uppercase;
@@ -294,7 +326,7 @@ body {
 
 .subtitle {
   font-size: medium;
-  font-family: "Roboto", sans-serif;
+  font-family: "Jost", sans-serif;
   text-align: center;
   margin: 0;
 }
@@ -304,7 +336,7 @@ body {
   grid-template-columns: 1fr;
 }
 .stack span {
-  font-family: "Roboto", sans-serif;
+  font-family: "Jost", sans-serif;
   font-size: 10rem;
   font-weight: 800;
   color: #000;
@@ -428,4 +460,30 @@ body {
     height: 2px;
     margin: 10px 0;
   }
+}
+#recordingButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: #d42323;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  transition: background-color 0.5s ease;
+}
+
+#recordingButton i {
+  color: #fff;
+  font-size: 12px;
+}
+
+#recordingButton.pressed {
+  background-color: #700f0f;
+  transform: scale(0.95);
 }/*# sourceMappingURL=style.css.map */
