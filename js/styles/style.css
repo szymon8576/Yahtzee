@@ -97,11 +97,13 @@ table th {
   margin: 20px;
 }
 .dice-display img:hover {
-  border: dotted 2px rgb(255, 255, 255);
-  opacity: 95%;
+  border-color: rgba(255, 255, 255, 0.644);
 }
 .dice-display .selected {
   border: dotted 3px rgb(255, 255, 255);
+}
+.dice-display .selected:hover {
+  border-color: rgb(255, 255, 255);
 }
 
 * {

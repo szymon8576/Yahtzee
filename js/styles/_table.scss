@@ -110,13 +110,16 @@ table th {
     display: block;
     margin: 20px;
     &:hover {
-      border-color: rgb(255, 255, 255);
-      opacity: 95%;
+      border-color: rgba(255, 255, 255, 0.644);
+      // opacity: 95%;
     }
   }
   .selected {
     border: dotted 3px rgb(255, 255, 255);
-    
+    &:hover {
+      border-color: rgb(255, 255, 255);
+      // opacity: 100%;
+    }
   }
 }
 
