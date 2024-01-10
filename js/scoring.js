@@ -339,6 +339,7 @@ function resetGame(){
  
   deleteCookie('table_id');
   deleteCookie('user_position');
+  sessionStorage.removeItem('rollNumber');
   
   window.location.href = "./";
 }
