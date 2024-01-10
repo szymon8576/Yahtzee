@@ -7,5 +7,5 @@ soundfile
 flask-cors
 gunicorn
 dnspython==1.16.0
-eventlet
+gevent
 pydub

@@ -49,9 +49,6 @@ def perform_mfcc(audio, mfcc_params, normalize=False, pad_to = None):
     return np.hstack([mfcc, delta_1, delta_2])
 
 
-from eventlet import monkey_patch
-monkey_patch()
-
 import requests
 
 
