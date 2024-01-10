@@ -23,7 +23,7 @@ function recognizeAudio(audioBlob){
     let formData = new FormData();
     formData.append("audio_data", audioBlob, "audio_data");
 
-    fetch(`${backendURL}/speech-recognition/recognize`, { method: 'POST', body: formData, mode: 'no-cors'})
+    fetch(`${backendURL}/speech-recognition/recognize`, { method: 'POST', body: formData})
     .then(response => {
       if (response.ok) {
         return response.json();
