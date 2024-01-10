@@ -5,8 +5,5 @@ app = create_app(debug=True)
 app.config.from_pyfile('config.py')
 CORS(app)
 
-from gevent import monkey
-monkey.patch_all()
-
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
