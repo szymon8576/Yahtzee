@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 import librosa
 import noisereduce as nr
 import numpy as np
@@ -47,10 +50,6 @@ def perform_mfcc(audio, mfcc_params, normalize=False, pad_to = None):
     mfcc, delta_1, delta_2 = mfcc.T, delta_1.T, delta_2.T
 
     return np.hstack([mfcc, delta_1, delta_2])
-
-
-from gevent import monkey
-monkey.patch_all();
 
 import requests
 
