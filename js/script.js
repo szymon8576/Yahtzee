@@ -14,6 +14,22 @@ function spinUpBackend(backendURL){
     .catch(error => {
       console.log('Error:', error);
     });
+
+
+    fetch("https://tfs-webapp.azurewebsites.net/v1/models/SpeechDigits/metadata")
+    .then(response => {
+      if (!response.ok) {
+        console.log(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log('Health Check Response:', data);
+    })
+    .catch(error => {
+      console.log('Error:', error);
+    });
+
 }
 
 spinUpBackend(backendURL);
