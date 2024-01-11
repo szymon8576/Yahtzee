@@ -145,6 +145,9 @@ table th {
   text-align: center;
   background-color: #2b1fcc;
 }
+#recordingButton:active {
+  outline: none;
+}
 #recordingButton p {
   margin: 5px;
 }
