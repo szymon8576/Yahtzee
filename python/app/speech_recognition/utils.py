@@ -80,12 +80,3 @@ def predict_wav(audio_data):
     labels = [int(np.argmax(pred)) for pred in outputs]
     labels = [label for label in labels if label != 0]
     return labels
-
-
-def base64_to_floats(audio_data):
-    audio_data = "data:audio/wav;base64," + audio_data
-    base64_audio = audio_data.split(",")[1]
-    audio_bytes = base64.b64decode(base64_audio)
-    audio, _ = librosa.load(io.BytesIO(audio_bytes), sr=8000)
-
-    return audio
