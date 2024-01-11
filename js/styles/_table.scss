@@ -150,16 +150,15 @@ table th {
 }
 
 #recordingButton {
-  user-select: none;
   width: 170px;
   color: rgb(250, 247, 247);
   border: 1px solid rgb(94, 94, 97);
   border-radius: 5px;
   text-align: center;
   background-color: #2b1fcc;
-  &:active {
-    outline: none;
-  }
+  
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; 
 
   p {
     margin: 5px;
