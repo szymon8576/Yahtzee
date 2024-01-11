@@ -149,6 +149,9 @@ function calculateCumulativeSum(array) {
       currentPlayer = data["current_player"]
       displaySpeculativeScore();
 
+      calculateAndDisplaySum(1);
+      calculateAndDisplaySum(2);
+
 
       //show/hide roll and voice recognition buttons
       if (userPosition == currentPlayer) 
