@@ -25,7 +25,7 @@ def create_room():
     user_uuid, bot = request.get_json().get('user_uuid'), request.get_json().get('bot')
 
     if len(user_uuid) == 0:
-        return jsonify({"message": "Please provide valid UUID."}), 403
+        return jsonify({"message": "Please refresh the main page (no valid User ID (UUID) was provided)"}), 403
     if len(gameRooms.getRoomsByUser(user_uuid))>20:
         return jsonify({"message": "You have reached max number of rooms per user."}), 403
 
