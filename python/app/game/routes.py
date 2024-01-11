@@ -30,12 +30,12 @@ def create_room():
         return jsonify({"message": "You have reached max number of rooms per user."}), 403
 
     room_id = gameRooms.get_vacant_room_id()
-    print(room_id)
+    # print(room_id)
 
     if room_id is not None:
         gameRooms.assign_player_to_room(room_id, user_uuid, position=1)
 
-        print(bot)
+        # print(bot)
         if bot: gameRooms.assign_player_to_room(room_id, user_uuid="BOT-"+user_uuid, position=2)
 
         return jsonify({"table_id": room_id})
@@ -68,7 +68,7 @@ def handle_connect():
     if not status:
         raise ConnectionRefusedError(message)
 
-    print(f"User {user_uuid} joined room {room_id}")
+    # print(f"User {user_uuid} joined room {room_id}")
     join_room(room_id)
 
     if gameRooms.check_if_two_players_in_room(room_id):
@@ -79,7 +79,7 @@ def handle_connect():
 
 @socketio.on('update')
 def handle_update_game_state(data):
-    print("Update socket-io request, ", data)
+    # print("Update socket-io request, ", data)
     room_id, user_uuid, new_state = int(data["table_id"]), data["user_uuid"], data["new_state"]
 
     message, status = gameRooms.check_credentials(room_id, user_uuid)
