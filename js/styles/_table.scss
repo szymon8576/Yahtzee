@@ -110,12 +110,10 @@ table th {
     height: auto;
     display: block;
     margin: 20px;
-    &:hover {
-      border-color: rgba(255, 255, 255, 0.644);
-      // opacity: 95%;
-      &:active {
-        // Active state styles
-        background-color: rgba(179, 0, 0, 0.644);
+    @media (hover: hover) and (pointer: fine) {
+      
+      &:hover {
+        border: dotted 3px rgba(255, 255, 255, 0.607);
       }
     }
   }

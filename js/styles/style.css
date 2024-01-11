@@ -98,11 +98,10 @@ table th {
   display: block;
   margin: 20px;
 }
-.dice-display img:hover {
-  border-color: rgba(255, 255, 255, 0.644);
-}
-.dice-display img:hover:active {
-  background-color: rgba(179, 0, 0, 0.644);
+@media (hover: hover) and (pointer: fine) {
+  .dice-display img:hover {
+    border: dotted 3px rgba(255, 255, 255, 0.607);
+  }
 }
 .dice-display .selected {
   border: dotted 3px rgb(255, 255, 255);
