@@ -1,28 +1,5 @@
 let backendURL = "https://yahtzee-game-webapp.azurewebsites.net"
 
-function spinUpBackend(backendURL){
-  fetch(`${backendURL}/game/health-check`)
-    .then(response => {
-      if (!response.ok) {
-        console.log(`HTTP error! Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log('Health Check Response:', data);
-    })
-    .catch(error => {
-      console.log('Error:', error);
-    });
-
-
-    fetch("https://tfs-webapp.azurewebsites.net/v1/models/SpeechDigits/metadata", {method:"GET", mode: "no-cors"})
-
-}
-
-spinUpBackend(backendURL);
-
-
 //modal window
 // Get the modal
 var modal = document.getElementById("myModal");
