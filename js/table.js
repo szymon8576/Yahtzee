@@ -48,6 +48,7 @@ function recognizeAudio(audioBlob){
         {
           lockedDice[index] = true;
           displaySelectedDices();
+          emitTableState();
         }
 
       });
