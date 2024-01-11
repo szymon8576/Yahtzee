@@ -1,4 +1,4 @@
-let backendURL = "https://yahtzee-backend.onrender.com"
+let backendURL = "https://yahtzee-game-webapp.azurewebsites.net"
 
 function spinUpBackend(backendURL){
   fetch(`${backendURL}/game/health-check`)

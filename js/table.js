@@ -1,4 +1,4 @@
-let backendURL = "https://yahtzee-backend.onrender.com"
+let backendURL = "https://yahtzee-game-webapp.azurewebsites.net"
 
 const userPosition = parseInt(getCookieValue("user_position"), 10);
 const gameMode = getCookieValue("game_mode");
