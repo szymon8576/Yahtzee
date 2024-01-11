@@ -4,8 +4,8 @@ $font-family: "Jost", sans-serif;
 
 table {
   border-collapse: collapse;
-  margin: 40px 0px;
-  width: 80%;
+  margin: 40px 10%;
+  width: min(50%, 350px);
   font-size: 14px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   border-radius: 15px;
@@ -75,14 +75,16 @@ table th {
 }
 
 .scoresheet {
-  width: 30%;
+  display:flex;
+  width: 50%;
+  justify-content: right;
 }
 
 .dice-section {
   display: flex;
   flex-direction: column;
-  width: 40%;
-  align-items: center;
+  width: 50%;
+  justify-content: left;
 }
 
 .dice-display {
@@ -91,7 +93,8 @@ table th {
   opacity: 1;
   position: relative;
   background-color: rgba(36, 26, 0, 0.262);
-  padding: 10px 100px 10px 100px;
+  padding: 10px 150px 10px 60px;
+  width: min(50%, 260px);
   border-radius: 30px;
   margin-bottom: 20px;
   margin-top: 40px;
@@ -124,6 +127,13 @@ table th {
       // opacity: 100%;
     }
   }
+}
+
+#rollButonWrapper{
+  width:calc(min(50%, 260px));
+  margin-left: 50px;
+  display: flex;
+  justify-content: center;
 }
 
 *{
@@ -166,7 +176,7 @@ table th {
 }
 
 #rollDice {
-  margin-left: 90px;
+  // margin-left: 90px;
   width: 50px;
   height: 50px;
   background-color: rgb(212, 35, 35);

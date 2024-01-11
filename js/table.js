@@ -23,7 +23,7 @@ function recognizeAudio(audioBlob){
     let formData = new FormData();
     formData.append("audio_data", audioBlob, "audio_data");
 
-    showWheel();
+    recordingButton.classList.add("disabled");
 
     fetch(`${backendURL}/speech-recognition/recognize`, { method: 'POST', body: formData})
     .then(response => {
@@ -37,7 +37,7 @@ function recognizeAudio(audioBlob){
 
       console.log('Response from server:', data);
 
-      hideWheel();
+      recordingButton.classList.remove("disabled");
 
       data.forEach((value) => {
         //get index of (first) dice with given value

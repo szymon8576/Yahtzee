@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <title>Yathzee</title>
@@ -12,7 +12,8 @@
 
 </head>
 <body>
-    <h2 class="game-name-table">
+  <div class="lds-spinner" id="spinning-wheel"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  <h2 class="game-name-table">
       Yathzee Table 🎲
     </h2>
   <p class="game-name-table" id="gameStatus"></p>
@@ -31,19 +32,21 @@
 </div>
 <div class="dice-section">
   <div class="dice-display"> 
-    <img src="/images/dice-1.png" alt="" class="dice" id='dice-1' onclick="toggleLock(0)">
-        <img src="/images/dice-2.png" alt="" class="dice" id='dice-2' onclick="toggleLock(1)">
-        <img src="/images/dice-1.png" alt="" class="dice" id='dice-3' onclick="toggleLock(2)">
-          <img src="/images/dice-4.png" alt="" class="dice" id='dice-4' onclick="toggleLock(3)">
-       <img src="/images/dice-5.png" alt="" class="dice" id='dice-5' onclick="toggleLock(4)">
-       <div id="recordingButton">
-         <i class="fas fa-microphone"></i>
-        </div>
+    <!-- <div style="position:relative"> -->
+      <!-- </div> -->
+      <img src="/images/dice-1.png" alt="" class="dice" id='dice-1' onclick="toggleLock(0)">
+      <img src="/images/dice-2.png" alt="" class="dice" id='dice-2' onclick="toggleLock(1)">
+      <img src="/images/dice-1.png" alt="" class="dice" id='dice-3' onclick="toggleLock(2)">
+      <img src="/images/dice-4.png" alt="" class="dice" id='dice-4' onclick="toggleLock(3)">
+      <img src="/images/dice-5.png" alt="" class="dice" id='dice-5' onclick="toggleLock(4)">
+      <div id="recordingButton">
+        <i class="fas fa-microphone"></i>
       </div>
-    <div style="position:relative">
-      <div class="lds-spinner" id="spinning-wheel"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-      <button id="rollDice" class="btn"> <i class="fa-solid fa-rotate-left"></i></button>
+      
     </div>
+    <div id="rollButonWrapper">
+      <button id="rollDice" class="btn"> <i class="fa-solid fa-rotate-left"></i></button>
+      </div>
   </div>
 </div>
 </div>
